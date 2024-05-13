@@ -112,7 +112,7 @@ const Home = () => {
     
 
     const [pageNumber, setPageNumber] = useState(0);
-    const rackPerPage = 24;
+    const rackPerPage = 20;
     const pagesVisited = pageNumber * rackPerPage;
 
     const racklist = rackdata && rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
@@ -277,20 +277,22 @@ const Home = () => {
                         <div className="grid grid-cols-5 gap-4 flex justify-between">
                             {racklist}
                         </div>
-                        <div className='flex justify-end  mt-5'>
+                        {/* <div className='flex justify-end  mt-5'>
                             <Pagination count={10} color="primary" />
-                        </div>
+                        </div> */}
+                        <div className='flex flex-row justify-end mt -5'>
                         <ReactPaginate
                             previousLabel={"Previous"}
                             nextLabel={"Next"}
                             pageCount={10}
                             onPageChange={changePage}
-                            containerClassName={"pagination"}
+                            containerClassName={"pagination flex-row flex gap-3"}
                             previousLinkClassName={"previous"}
                             nextLinkClassName={"next"}
                             disabledClassName={"disabled"}
                             activeClassName={"active"}
                         />
+                        </div>
                     </div>
 
                 </div>
