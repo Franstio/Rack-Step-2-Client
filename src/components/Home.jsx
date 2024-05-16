@@ -19,6 +19,8 @@ import {
 } from '@mui/material';
 import axios from "axios";
 import ReactPaginate from 'react-paginate';
+import Keyboard from 'react-simple-keyboard';
+import 'react-simple-keyboard/build/css/index.css';
 
 
 const Home = () => {
@@ -79,10 +81,15 @@ const Home = () => {
         console.log(res);
         if (res.status==200)
             openDoor();
+        setPassword(null);
     };
 
     const handleCancel = () => {
         toggleModal();
+    };
+
+    const handleKeyboardInput = (input) => {
+        setPassword(input);
     };
 
     const Login = async () => {
@@ -338,6 +345,18 @@ const Home = () => {
                                             <button type="button" onClick={handleCancel} className="bg-gray-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Cancel</button>
                                         </div>
                                     </form>
+                                    <Keyboard
+                                onChange={handleKeyboardInput}
+                                inputName="password"
+                                layout={{
+                                    default: [
+                                        "1 2 3",
+                                        "4 5 6",
+                                        "7 8 9",
+                                        "0 {bksp}"
+                                    ]
+                                }}
+                            />
                                 </div>
                             </div>
                         </div>
