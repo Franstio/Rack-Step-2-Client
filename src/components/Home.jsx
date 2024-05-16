@@ -86,6 +86,7 @@ const Home = () => {
 
     const handleCancel = () => {
         toggleModal();
+        setPassword(null);
     };
 
     const handleKeyboardInput = (input) => {
