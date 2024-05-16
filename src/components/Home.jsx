@@ -5,22 +5,19 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { IoSettingsOutline } from "react-icons/io5";
 import { styled } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import Pagination from '@mui/material/Pagination';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import {
-    Container,
-    Card,
-    CardContent,
     TextField,
-    Button,
     Typography,
-    CircularProgress,
-    Grid,
 } from '@mui/material';
 import axios from "axios";
 import ReactPaginate from 'react-paginate';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
+import { IconButton } from '@mui/material';
+import { InputAdornment } from '@mui/material';
+import Visibility  from '@mui/icons-material/Visibility';
+import VisibilityOff  from '@mui/icons-material/VisibilityOff';
 
 
 const Home = () => {
@@ -28,7 +25,7 @@ const Home = () => {
         { name: 'Dashboard', href: '#', current: true },
         { name: 'Calculation', href: '#', current: false }
     ]
-    const [selectedRack,setSelectedRack] = useState({}); 
+    const [selectedRack, setSelectedRack] = useState({});
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
     }
@@ -58,11 +55,11 @@ const Home = () => {
     const [rackdata, setRackData] = useState('');
     const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const toggleModal = () => {
         setShowModal(!showModal);
     };
-    const selectRack = (rack)=>
-    {
+    const selectRack = (rack) => {
         setSelectedRack(rack);
         toggleModal();
     }
@@ -75,11 +72,11 @@ const Home = () => {
         setRackData(response.data);
     };
 
-    const handleLogin =async () => {
+    const handleLogin = async () => {
         toggleModal();
         let res = await Login();
         console.log(res);
-        if (res.status==200)
+        if (res.status == 200)
             openDoor();
         setPassword(null);
     };
@@ -95,32 +92,34 @@ const Home = () => {
 
     const Login = async () => {
         let response = null;
-        try
-        {
-            response = await axios.post("http://localhost:5000/login",{
-            password: password
-        });
+        try {
+            response = await axios.post("http://localhost:5000/login", {
+                password: password
+            });
         }
-        catch (err)
-        {
+        catch (err) {
             alert(err.response.data.msg);
             response = err.response;
         }
-        return(response);
-      };
+        return (response);
+    };
 
     const openDoor = async () => {
         const data = {
-                address: selectedRack.address,
-                value: selectedRack.value,
-                idRack: selectedRack.clientId
+            address: selectedRack.address,
+            value: selectedRack.value,
+            idRack: selectedRack.clientId
         };
         const response = await axios.post("http://localhost:5000/rackOpen", data);
     };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+      };
     
 
     const [pageNumber, setPageNumber] = useState(0);
-    const rackPerPage = 20;
+    const rackPerPage = 24;
     const pagesVisited = pageNumber * rackPerPage;
 
     const racklist = rackdata && rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
@@ -128,14 +127,14 @@ const Home = () => {
             <div className='' key={index}>
                 <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
                     <FiberManualRecordIcon fontSize="small" style={{ color: 'green', position: 'absolute', top: 0, right: 0 }} />
-                    <h1 className='text-center mb-2 font-bold text-lg'>{_rackdata.dataWaste.name}</h1>
+                    <h1 className='text-center mb-2 font-bold text-lg'>{_rackdata.name}</h1>
                     <div className='' style={{ display: 'flex', alignItems: 'center' }}>
                         <BorderLinearProgress variant="determinate" value={70} style={{ width: '90%', height: '12px', marginRight: '10px' }} />
                         70%
                     </div>
                     <div className='text-center mt-2 text-lg font-bold'>
                         <p>{_rackdata.weight}Kg</p>
-                        <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={()=>selectRack(_rackdata)}>{_rackdata.name}</a>
+                        <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={() => selectRack(_rackdata)}>Open</a>
                     </div>
                 </div>
             </div>
@@ -282,24 +281,24 @@ const Home = () => {
                 <div className='flex justify-between gap-5'>
                     <div className='flex-1 p-4 border rounded bg-white mt-5'>
                         <h1 className='text-blue-600 font-semibold text-xl'>Bin List</h1>
-                        <div className="grid grid-cols-5 gap-4 flex justify-between">
+                        <div className="grid grid-cols-4 gap-4 flex justify-between">
                             {racklist}
                         </div>
                         {/* <div className='flex justify-end  mt-5'>
                             <Pagination count={10} color="primary" />
                         </div> */}
                         <div className='flex flex-row justify-end mt -5'>
-                        <ReactPaginate
-                            previousLabel={"Previous"}
-                            nextLabel={"Next"}
-                            pageCount={10}
-                            onPageChange={changePage}
-                            containerClassName={"pagination flex-row flex gap-3"}
-                            previousLinkClassName={"previous"}
-                            nextLinkClassName={"next"}
-                            disabledClassName={"disabled"}
-                            activeClassName={"active"}
-                        />
+                            <ReactPaginate
+                                previousLabel={"Previous"}
+                                nextLabel={"Next"}
+                                pageCount={2}
+                                onPageChange={changePage}
+                                containerClassName={"pagination flex-row flex gap-3"}
+                                previousLinkClassName={"previous"}
+                                nextLinkClassName={"next"}
+                                disabledClassName={"disabled"}
+                                activeClassName={"active"}
+                            />
                         </div>
                     </div>
 
@@ -331,14 +330,24 @@ const Home = () => {
                                         </Typography>
 
                                         <TextField
-                                            type="password"
+                                            type={showPassword ? 'text' : 'password'}
                                             label="Pin"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             variant="outlined"
                                             fullWidth
                                             margin="normal"
-                                            required // This attribute makes the field required
+                                            required
+                                            focused
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <IconButton onClick={togglePasswordVisibility}>
+                                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
+                                            }}
                                         />
 
                                         <div className="flex justify-center mt-5">
@@ -347,17 +356,17 @@ const Home = () => {
                                         </div>
                                     </form>
                                     <Keyboard
-                                onChange={handleKeyboardInput}
-                                inputName="password"
-                                layout={{
-                                    default: [
-                                        "1 2 3",
-                                        "4 5 6",
-                                        "7 8 9",
-                                        "0 {bksp}"
-                                    ]
-                                }}
-                            />
+                                        onChange={handleKeyboardInput}
+                                        inputName="password"
+                                        layout={{
+                                            default: [
+                                                "1 2 3",
+                                                "4 5 6",
+                                                "7 8 9",
+                                                "0 {bksp}"
+                                            ]
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </div>
