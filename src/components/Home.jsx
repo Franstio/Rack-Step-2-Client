@@ -123,7 +123,7 @@ const Home = () => {
     
 
     const [pageNumber, setPageNumber] = useState(0);
-    const rackPerPage = 24;
+    const rackPerPage = 26;
     const pagesVisited = pageNumber * rackPerPage;
 
     const racklist = rackdata && rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
@@ -295,7 +295,7 @@ const Home = () => {
                             <ReactPaginate
                                 previousLabel={"Previous"}
                                 nextLabel={"Next"}
-                                pageCount={2}
+                                pageCount={1}
                                 onPageChange={changePage}
                                 containerClassName={"pagination flex-row flex gap-3"}
                                 previousLinkClassName={"previous"}
