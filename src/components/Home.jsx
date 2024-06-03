@@ -93,7 +93,7 @@ const Home = () => {
     const Login = async () => {
         let response = null;
         try {
-            response = await axios.post("http://localhost:5000/login", {
+            response = await axios.post("http://pcs.local:5000/login", {
                 password: password
             });
         }
