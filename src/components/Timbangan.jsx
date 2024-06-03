@@ -273,7 +273,8 @@ const Home = () => {
                 idContainer: container.containerId,
                 badgeId: user.badgeId,
                 IdWaste: container.IdWaste,
-                weight: neto
+                weight: neto,
+                type: 'Dispose'
             }
         }).then(res => {
             setWasteId(container.idWaste);
