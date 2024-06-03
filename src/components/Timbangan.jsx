@@ -40,7 +40,7 @@ const Home = () => {
     const [clientId, setClientId] = useState('');
     const [address, setAddress] = useState('');
     const [value, setValue] = useState('');
-    const [socket,setSocket] = useState(io('http://localhost:5000/')); // Sesuaikan dengan alamat server
+    //const [socket,setSocket] = useState(io('http://localhost:5000/')); // Sesuaikan dengan alamat server
     //    const socket = null;
     const navigation = [
         { name: 'Dashboard', href: '#', current: true },
