@@ -267,7 +267,7 @@ const Home = () => {
         }
         setShowModal(false);
     }
-    const saveTransaksi = (neto) => {
+    const saveTransaksi = () => {
         axios.post("http://localhost:5000/SaveTransaksi", {
             payload: {
                 idContainer: container.containerId,
