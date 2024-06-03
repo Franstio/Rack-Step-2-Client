@@ -359,7 +359,7 @@ const Home = () => {
         try {
             const response = await axios.post('http://localhost:5000/UpdateBinWeight', {
                 binId: rackId,
-                neto: neto
+                weight: neto
             }).then(x => {
                 setScanData('');
                 setUser(null);
