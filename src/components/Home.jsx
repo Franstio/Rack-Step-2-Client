@@ -68,7 +68,7 @@ const Home = () => {
     }, []);
 
     const getRackList = async () => {
-        const response = await axios.get("http://localhost:5000/racklist");
+        const response = await axios.get("http://pcs.local:5000/racklist");
         setRackData(response.data);
     };
 
