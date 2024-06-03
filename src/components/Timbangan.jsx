@@ -267,13 +267,13 @@ const Home = () => {
         }
         setShowModal(false);
     }
-    const saveTransaksi = () => {
+    const saveTransaksi = (neto) => {
         axios.post("http://localhost:5000/SaveTransaksi", {
             payload: {
                 idContainer: container.containerId,
                 badgeId: user.badgeId,
                 IdWaste: container.IdWaste,
-                neto: neto
+                weight: neto
             }
         }).then(res => {
             setWasteId(container.idWaste);
