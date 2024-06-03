@@ -93,7 +93,7 @@ const Home = () => {
 
     useEffect(() => {
 	socket.emit('connectScale');
-        socket.on('data', (weight50Kg) => {
+        socket.on('data1', (weight50Kg) => {
             try {
                 //console.log(weight50Kg)
                 weight50Kg.weight50Kg = weight50Kg && weight50Kg.weight50Kg ? parseFloat(weight50Kg.weight50Kg.replace("=", "") ?? '0') : 0;
