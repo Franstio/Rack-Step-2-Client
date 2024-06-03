@@ -20,7 +20,7 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import axios from "axios";
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:5000/');
+//const socket = io('http://localhost:5000/');
 const apiClient = axios.create({
     withCredentials: false
 });
@@ -40,7 +40,7 @@ const Home = () => {
     const [clientId, setClientId] = useState('');
     const [address, setAddress] = useState('');
     const [value, setValue] = useState('');
-    //const [socket,setSocket] = useState(io('http://localhost:5000/')); // Sesuaikan dengan alamat server
+    const [socket,setSocket] = useState(); // Sesuaikan dengan alamat server
     //    const socket = null;
     const navigation = [
         { name: 'Dashboard', href: '#', current: true },
@@ -79,7 +79,9 @@ const Home = () => {
             backgroundColor: value > 70 ? '#f44336' : theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
         },
     }));
-
+    useEffect(()=>{
+        setSocket(io('http://localhost:5000/'));
+    },[])
     const CustomLinearProgress = ({ value }) => {
         return (
             <LinearProgress
@@ -92,6 +94,8 @@ const Home = () => {
     };
 
     useEffect(() => {
+        if (!socket)
+            return;
 	socket.emit('connectScale');
         socket.on('data1', (weight50Kg) => {
             try {
@@ -102,7 +106,7 @@ const Home = () => {
             }
             catch { }
         });
-    }, []);
+    }, [socket]);
     useEffect(() => {
         const weight = Scales50Kg?.weight50Kg ?? 0;
         const binWeight = container?.weightbin ?? 0;
