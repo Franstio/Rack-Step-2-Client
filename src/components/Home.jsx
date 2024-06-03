@@ -111,7 +111,7 @@ const Home = () => {
             idRack: selectedRack.clientId
         };
         try{
-        const response = await axios.post("http://pcs.local:5000/rackOpen", data);
+        const response = await axios.post("http://pcs-02.local:5000/rackOpen", data);
         }
         catch
         {}
