@@ -651,7 +651,6 @@ const Home = () => {
                                     <Typography variant="h6" align="center" gutterBottom>
                                         <p>{rackname} Telah Dibuka!</p>
                                     </Typography>
-                                    <p>Ingin Menimbang lagi ??</p>
                                     <div className="flex justify-center mt-5">
                                         <button type="button" onClick={()=>setShowModalConfirmWeight(false)} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mr-2 rounded">Ok</button>
                                     </div>
