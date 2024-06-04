@@ -253,7 +253,7 @@ const Home = () => {
         console.log(type);
 
         if (type == 'Dispose') {
-            if (neto > 4) {
+            if (neto > 50) {
                 alert("Berat limbah melebihi kapasitas maximum");
                 return;
             }
