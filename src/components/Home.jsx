@@ -139,7 +139,7 @@ const Home = () => {
                     <h1 className='text-center mb-2 font-bold text-lg'>{_rackdata.name}</h1>
                     <div className='' style={{ display: 'flex', alignItems: 'center' }}>
                         <BorderLinearProgress variant="determinate" value={value} style={{ width: '90%', height: '12px', marginRight: '10px' }} />
-                        {value}
+                        {value}%
                     </div>
                     <div className='text-center mt-2 text-lg font-bold'>
                         <p>{_rackdata.weight}Kg</p>
