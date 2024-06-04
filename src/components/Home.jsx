@@ -130,14 +130,16 @@ const Home = () => {
     const pagesVisited = pageNumber * rackPerPage;
 
     const racklist = rackdata && rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
-        .map((_rackdata, index) => (
+    .map((_rackdata, index) => {
+        const value = (_rackdata.weight / _rackdata.max_weight) * 100; // Menghitung nilai value
+        return (
             <div className='' key={index}>
                 <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
                     <FiberManualRecordIcon fontSize="small" style={{ color: 'green', position: 'absolute', top: 0, right: 0 }} />
                     <h1 className='text-center mb-2 font-bold text-lg'>{_rackdata.name}</h1>
                     <div className='' style={{ display: 'flex', alignItems: 'center' }}>
-                        <BorderLinearProgress variant="determinate" value={70} style={{ width: '90%', height: '12px', marginRight: '10px' }} />
-                        70%
+                        <BorderLinearProgress variant="determinate" value={value} style={{ width: '90%', height: '12px', marginRight: '10px' }} />
+                        {value}%
                     </div>
                     <div className='text-center mt-2 text-lg font-bold'>
                         <p>{_rackdata.weight}Kg</p>
@@ -145,7 +147,9 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-        ));
+        );
+    });
+
 
     const changePage = ({ selected }) => {
         setPageNumber(selected);
