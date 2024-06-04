@@ -114,7 +114,7 @@ const Home = () => {
             idRack: selectedRack.clientId
         };
         try{
-        const response = await apiClient.post("http://pcs-02.local:5000/rackOpen", data);
+        const response = await apiClient.post("http://pcs-02.local:5000/rackOpenManual", data);
         }
         catch
         {}
