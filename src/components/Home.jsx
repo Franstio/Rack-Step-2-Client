@@ -19,6 +19,9 @@ import { InputAdornment } from '@mui/material';
 import Visibility  from '@mui/icons-material/Visibility';
 import VisibilityOff  from '@mui/icons-material/VisibilityOff';
 
+const apiClient = axios.create({
+    withCredentials: false
+});
 
 const Home = () => {
     const navigation = [
@@ -111,7 +114,7 @@ const Home = () => {
             idRack: selectedRack.clientId
         };
         try{
-        const response = await axios.post("http://pcs-02.local:5000/rackOpen", data);
+        const response = await apiClient.post("http://pcs-02.local:5000/rackOpen", data);
         }
         catch
         {}
