@@ -104,7 +104,7 @@ const Home = () => {
                 return;
             findRack.weight = input.weight;
             console.log([rackdata,findRack,input]);
-            setRackData([...tempRack]);
+            setRackData([...rackdata]);
         });
     
     }, [socket]);
