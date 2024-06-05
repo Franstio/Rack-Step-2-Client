@@ -84,14 +84,28 @@ const Home = () => {
         setRackData(response.data);
     };
 
-    useEffect(() => {
+/*     useEffect(() => {
         socket.on('weightUpdated', (data) => {
             setWeights((prevWeights) => ({
                 ...prevWeights,
                 [data.binId]: data.weight,
             }));
         });
+    }, [socket]); */
+
+    useEffect(() => {
+        if (!socket) return;
+    
+        socket.on('weightUpdated', (data) => {
+            // console.log(["Input", data]);
+            setWeights(prev => ({
+                ...prev,
+                [data.binId]: data.weight,
+            }));
+        });
+    
     }, [socket]);
+    
 
     const handleLogin = async () => {
         toggleModal();
