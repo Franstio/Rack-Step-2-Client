@@ -98,7 +98,7 @@ const Home = () => {
     
         socket.on('weightUpdated', input => {
             // console.log(["Input", data]);
-            console.log([rackdata,findRack,input]);
+            console.log([rackdata,input]);
             let findRack = rackdata.find(x=>x.rackId==input.binId);
             console.log([rackdata,findRack,input]);
             if (!findRack)
