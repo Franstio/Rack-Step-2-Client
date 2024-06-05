@@ -57,8 +57,10 @@ const Home = () => {
     };
     const [rackdata, setRackData] = useState('');
     const [password, setPassword] = useState('');
+    const [Getweightbin, setGetweightbin] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [weights, setWeights] = useState({});
     const toggleModal = () => {
         setShowModal(!showModal);
     };
@@ -74,6 +76,19 @@ const Home = () => {
         const response = await axios.get("http://pcs.local:5000/racklist");
         setRackData(response.data);
     };
+
+    useEffect(() => {
+        socket.on('weightUpdated', (data) => {
+            setWeights((prevWeights) => ({
+                ...prevWeights,
+                [data.binId]: data.weight,
+            }));
+        });
+
+        return () => {
+            socket.off('weightUpdated');
+        };
+    }, []);
 
     const handleLogin = async () => {
         toggleModal();
@@ -131,7 +146,7 @@ const Home = () => {
 
     const racklist = rackdata && rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
     .map((_rackdata, index) => {
-        const value = Math.round((_rackdata.weight / _rackdata.max_weight) * 100); // Hitung dan bulatkan persentase
+        const value = Math.round((weights / _rackdata.max_weight) * 100); // Hitung dan bulatkan persentase
         return (
             <div className='' key={index}>
                 <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
@@ -142,7 +157,8 @@ const Home = () => {
                         {value}%
                     </div>
                     <div className='text-center mt-2 text-lg font-bold'>
-                        <p>{_rackdata.weight}Kg</p>
+                      {/*   <p>{_rackdata.weight}Kg</p> */}
+                        <p>{weights}Kg</p>
                         <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={() => selectRack(_rackdata)}>Open</a>
                     </div>
                 </div>
