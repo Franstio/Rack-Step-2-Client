@@ -61,7 +61,7 @@ const Home = () => {
     const [Getweightbin, setGetweightbin] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [racklist, setRackList] = useState(0);
+    const [racklist, setRackList] = useState([]);
     const [socket, setSocket] = useState(); // Sesuaikan dengan alamat server
 
 
@@ -103,7 +103,7 @@ const Home = () => {
                 </div>
             </div>
         );
-    });
+    })
         )
     });
     const getRackList = async () => {
