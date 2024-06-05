@@ -100,8 +100,8 @@ const Home = () => {
             // console.log(["Input", data]);
             const tempRack = rackdata;
             let findRack = tempRack.find(x=>x.rackId==input.binId);
-            findRack.weight = input.weight;
             console.log([tempRack,findRack,input]);
+            findRack.weight = input.weight;
             if (!findRack)
                 return;
             setRackData([...tempRack]);
