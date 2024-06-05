@@ -119,7 +119,7 @@ const Home = () => {
             }));
         });
     }, [socket]); */
-    getRackData = () => rackdata;
+    const getRackData = () => rackdata;
     useEffect(() => {
         if (!socket) return;
     
