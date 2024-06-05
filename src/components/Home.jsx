@@ -98,6 +98,7 @@ const Home = () => {
     
         socket.on('weightUpdated', input => {
             // console.log(["Input", data]);
+            console.log([rackdata,findRack,input]);
             let findRack = rackdata.find(x=>x.rackId==input.binId);
             console.log([rackdata,findRack,input]);
             if (!findRack)
@@ -160,13 +161,13 @@ const Home = () => {
       };
     
 
-    const [pageNumber, setPageNumber] = useState(0);
+    const [pageNumber, setPageNumber] = useState(0);    
     const rackPerPage = 26;
     const pagesVisited = pageNumber * rackPerPage;
 
     const racklist = rackdata && rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
     .map((_rackdata, index) => {
-        const value = Math.round((_rackdata.weight / _rackdata.max_weight) * 100); // Hitung dan bulatkan persentase
+        const value = Math.round((_rackdata.weight / _rackdata.max_weight) * 100);
         return (
             <div className='' key={index}>
                 <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
