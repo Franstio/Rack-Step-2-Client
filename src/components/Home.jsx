@@ -98,12 +98,12 @@ const Home = () => {
     
         socket.on('weightUpdated', input => {
             // console.log(["Input", data]);
-            const tempRack = rackdata;
-            let findRack = tempRack.find(x=>x.rackId==input.binId);
-            console.log([tempRack,findRack,input]);
-            findRack.weight = input.weight;
+            let findRack = rackdata.find(x=>x.rackId==input.binId);
+            console.log([rackdata,findRack,input]);
             if (!findRack)
                 return;
+            findRack.weight = input.weight;
+            console.log([rackdata,findRack,input]);
             setRackData([...tempRack]);
         });
     
