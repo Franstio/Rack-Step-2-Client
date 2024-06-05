@@ -61,7 +61,7 @@ const Home = () => {
     const [Getweightbin, setGetweightbin] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [weights, setWeights] = useState(0);
+    const [racklist, setRackList] = useState(0);
     const [socket, setSocket] = useState(); // Sesuaikan dengan alamat server
 
 
@@ -78,7 +78,34 @@ const Home = () => {
     useEffect(() => {
         getRackList();
     }, []);
-
+    useEffect(()=>{
+        console.log(rackdata);
+        if (!rackdata)
+            return;
+        setRackList(
+            rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
+    .map((_rackdata, index) => {
+        const value = Math.round((_rackdata.weight / _rackdata.max_weight) * 100);
+        return (
+            <div className='' key={index}>
+                <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
+                    <FiberManualRecordIcon fontSize="small" style={{ color: 'green', position: 'absolute', top: 0, right: 0 }} />
+                    <h1 className='text-center mb-2 font-bold text-lg'>{_rackdata.name}</h1>
+                    <div className='' style={{ display: 'flex', alignItems: 'center' }}>
+                        <BorderLinearProgress variant="determinate" value={value} style={{ width: '90%', height: '12px', marginRight: '10px' }} />
+                        {value}%
+                    </div>
+                    <div className='text-center mt-2 text-lg font-bold'>
+                      {/*   <p>{_rackdata.weight}Kg</p> */}
+                        <p>{_rackdata.weight}Kg</p>
+                        <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={() => selectRack(_rackdata)}>Open</a>
+                    </div>
+                </div>
+            </div>
+        );
+    });
+        )
+    });
     const getRackList = async () => {
         const response = await axios.get("http://pcs.local:5000/racklist");
         setRackData(response.data);
@@ -165,27 +192,6 @@ const Home = () => {
     const rackPerPage = 26;
     const pagesVisited = pageNumber * rackPerPage;
 
-    const racklist = rackdata && rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
-    .map((_rackdata, index) => {
-        const value = Math.round((_rackdata.weight / _rackdata.max_weight) * 100);
-        return (
-            <div className='' key={index}>
-                <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
-                    <FiberManualRecordIcon fontSize="small" style={{ color: 'green', position: 'absolute', top: 0, right: 0 }} />
-                    <h1 className='text-center mb-2 font-bold text-lg'>{_rackdata.name}</h1>
-                    <div className='' style={{ display: 'flex', alignItems: 'center' }}>
-                        <BorderLinearProgress variant="determinate" value={value} style={{ width: '90%', height: '12px', marginRight: '10px' }} />
-                        {value}%
-                    </div>
-                    <div className='text-center mt-2 text-lg font-bold'>
-                      {/*   <p>{_rackdata.weight}Kg</p> */}
-                        <p>{_rackdata.weight}Kg</p>
-                        <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={() => selectRack(_rackdata)}>Open</a>
-                    </div>
-                </div>
-            </div>
-        );
-    });
 
 
 
