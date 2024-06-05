@@ -56,7 +56,7 @@ const Home = () => {
             />
         );
     };
-    const [rackdata, setRackData] = useState('');
+    const [rackdata, setRackData] = useState([]);
     const [password, setPassword] = useState('');
     const [Getweightbin, setGetweightbin] = useState(0);
     const [showModal, setShowModal] = useState(false);
@@ -96,12 +96,15 @@ const Home = () => {
     useEffect(() => {
         if (!socket) return;
     
-        socket.on('weightUpdated', (data) => {
+        socket.on('weightUpdated', input => {
             // console.log(["Input", data]);
-            setWeights(prev => ({
-                ...prev,
-                [data.binId]: data.weight,
-            }));
+            const tempRack = rackdata;
+            let findRack = tempRack.find(x=>x.rackId==input.binId);
+            findRack.weight = input.weight;
+            console.log([tempRack,findRack,input]);
+            if (!findRack)
+                return;
+            setRackData([...tempRack]);
         });
     
     }, [socket]);
@@ -163,7 +166,7 @@ const Home = () => {
 
     const racklist = rackdata && rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
     .map((_rackdata, index) => {
-        const value = Math.round((weights / _rackdata.max_weight) * 100); // Hitung dan bulatkan persentase
+        const value = Math.round((_rackdata.weight / _rackdata.max_weight) * 100); // Hitung dan bulatkan persentase
         return (
             <div className='' key={index}>
                 <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
@@ -175,7 +178,7 @@ const Home = () => {
                     </div>
                     <div className='text-center mt-2 text-lg font-bold'>
                       {/*   <p>{_rackdata.weight}Kg</p> */}
-                        <p>{weights}Kg</p>
+                        <p>{_rackdata.weight}Kg</p>
                         <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={() => selectRack(_rackdata)}>Open</a>
                     </div>
                 </div>
