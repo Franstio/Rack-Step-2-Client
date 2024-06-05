@@ -91,7 +91,7 @@ const Home = () => {
                 [data.binId]: data.weight,
             }));
         });
-    }, []);
+    }, [socket]);
 
     const handleLogin = async () => {
         toggleModal();
