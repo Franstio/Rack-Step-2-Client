@@ -91,10 +91,6 @@ const Home = () => {
                 [data.binId]: data.weight,
             }));
         });
-
-        return () => {
-            socket.off('weightUpdated');
-        };
     }, []);
 
     const handleLogin = async () => {
