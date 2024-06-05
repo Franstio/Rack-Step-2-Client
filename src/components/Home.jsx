@@ -61,7 +61,7 @@ const Home = () => {
     const [Getweightbin, setGetweightbin] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [weights, setWeights] = useState({});
+    const [weights, setWeights] = useState(0);
     const [socket, setSocket] = useState(); // Sesuaikan dengan alamat server
 
 
