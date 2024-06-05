@@ -119,20 +119,21 @@ const Home = () => {
             }));
         });
     }, [socket]); */
-
+    getRackData = () => rackdata;
     useEffect(() => {
         if (!socket) return;
     
         socket.on('weightUpdated', input => {
             // console.log(["Input", data]);
-            console.log([rackdata,input]);
-            let findRack = rackdata.find(x=>x.rackId==input.binId);
-            console.log([rackdata,findRack,input]);
+            let tempRack = getRackData();
+            console.log([tempRack,input]);
+            let findRack = tempRack.find(x=>x.rackId==input.binId);
+            console.log([tempRack,findRack,input]);
             if (!findRack)
                 return;
             findRack.weight = input.weight;
-            console.log([rackdata,findRack,input]);
-            setRackData([...rackdata]);
+            console.log([tempRack,findRack,input]);
+            setRackData([...tempRack]);
         });
     
     }, [socket]);
