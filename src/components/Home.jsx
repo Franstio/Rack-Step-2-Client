@@ -122,7 +122,7 @@ const Home = () => {
     const getRackData = () => rackdata;
     useEffect(() => {
         if (!socket) return;
-    
+        socket.off('weightUpdated');
         socket.on('weightUpdated', input => {
             // console.log(["Input", data]);
             let tempRack = getRackData();
@@ -136,7 +136,7 @@ const Home = () => {
             setRackData([...tempRack]);
         });
     
-    }, [socket]);
+    }, [socket,rackdata]);
     
 
     const handleLogin = async () => {
