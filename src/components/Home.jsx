@@ -18,6 +18,7 @@ import { IconButton } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import Visibility  from '@mui/icons-material/Visibility';
 import VisibilityOff  from '@mui/icons-material/VisibilityOff';
+import io from 'socket.io-client';
 
 const apiClient = axios.create({
     withCredentials: false
@@ -61,6 +62,12 @@ const Home = () => {
     const [showModal, setShowModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [weights, setWeights] = useState({});
+    const [socket, setSocket] = useState(); // Sesuaikan dengan alamat server
+
+
+    useEffect(() => {
+        setSocket(io('http://PCS.local:5000/'));
+    }, [])
     const toggleModal = () => {
         setShowModal(!showModal);
     };
