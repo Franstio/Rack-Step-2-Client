@@ -134,6 +134,29 @@ const Home = () => {
         }
     }, [bottomLockHostData]);
 
+    const sendDataPanasonicServer = async () => {
+        //const _finalNeto = getWeight();
+        try {
+            const response = await apiClient.post(`http://192.168.205.128/api/pid/pidatalog`, {
+                badgeno: "123",
+                logindate: '',
+                stationname: "2-PCL",
+                frombinname: "1-PCL-3-2-7-TM",
+                tobinname: "2-PCL-1-TM",
+                weight: neto,
+                activity: type
+
+            });
+            if (response.status != 200) {
+                console.log(response);
+                return;
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     async function sendRackOpen(rack) {
         try {
             //console.log(container);
@@ -421,6 +444,8 @@ const Home = () => {
                 }
                 saveTransaksi();
                 updateBinWeight();
+                sendDataPanasonicServer();
+                
 
             }
             else {
