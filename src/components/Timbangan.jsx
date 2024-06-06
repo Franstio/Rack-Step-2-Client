@@ -330,7 +330,7 @@ const Home = () => {
         try {
             console.log(container);
             const response = await axios.post('http://localhost:5000/CheckBinCapacity', {
-                name: container.name,
+                IdWaste: container.IdWaste,
                 neto: neto
             }).then(x => {
                 const res = x.data;
