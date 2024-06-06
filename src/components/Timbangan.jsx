@@ -40,6 +40,8 @@ const Home = () => {
     const [clientId, setClientId] = useState('');
     const [address, setAddress] = useState('');
     const [value, setValue] = useState('');
+    const [status, setStatus] = useState('');
+    const [name, setName] = useState('');
     const [socket,setSocket] = useState(); // Sesuaikan dengan alamat server
     //    const socket = null;
     const navigation = [
@@ -221,6 +223,7 @@ const Home = () => {
                         else{
                             setContainer(res.data.container);
                             setType(res.data.container.type);
+                            setStatus(res.data.container.status);
                             //setShowModalInfoScales(true);
                             setmessage('Tekan Tombol Submit');
                         }
@@ -254,9 +257,17 @@ const Home = () => {
 
         if (type == 'Dispose') {
             if (neto > 50) {
-                alert("Berat limbah melebihi kapasitas maximum");
+                alert("Berat limbah melebihi kapasitas maksimum");
                 return;
             }
+        
+            if (status == 'Test') {
+                
+            } else if (status === null || status === '') {
+                alert("request dari step 1");
+                return; 
+            }
+        
             await CheckBinCapacity();
             setShowModalConfirmWeight(true);
             setIsSubmitAllowed(false);
@@ -318,7 +329,7 @@ const Home = () => {
         try {
             console.log(container);
             const response = await axios.post('http://localhost:5000/CheckBinCapacity', {
-                IdWaste: container.IdWaste,
+                name: container.name,
                 neto: neto
             }).then(x => {
                 const res = x.data;
