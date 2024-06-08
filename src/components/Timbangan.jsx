@@ -377,7 +377,7 @@ const Home = () => {
             console.log(container);
             const response = await apiClient.post('http://localhost:5000/CheckBinCapacity', {
                 line: container.line,
-                neto: neto
+                //neto: neto
             }).then(x => {
                 const res = x.data;
                 if (!res.success) {
