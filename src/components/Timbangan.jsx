@@ -386,12 +386,12 @@ const Home = () => {
                 }
                 console.log(res);
                // setRollingDoorId(res.bin.id);
-                setRackname(res.rack.name);
-                setRackId(res.rack.rackId);
-                setClientId(res.rack.clientId);
-                setAddress(res.rack.address);
-                setValue(res.rack.value);
-                sendRackOpen(res.rack);
+                setRackname(res.bins[0].name);
+                setRackId(res.bins[0].rackId);
+                setClientId(res.bins[0].clientId);
+                setAddress(res.bins[0].address);
+                setValue(res.bins[0].value);
+                sendRackOpen(res.bins[0]);
             });
             console.log(response);
         }
