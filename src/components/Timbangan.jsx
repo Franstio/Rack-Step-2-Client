@@ -387,6 +387,21 @@ const Home = () => {
         }
     }
 
+    const UpdateDataFromStep2 = async () => {
+        try {
+            const response = await apiClient.post('http://192.168.205.111:5000/UpdateDataFromStep2', {
+                containerId: container.containerId,
+                status: "Done"
+            }).then(x => {
+                const res = x.data;
+                console.log(res);
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     const CheckBinCapacity = async () => {
         try {
             console.log(container);
@@ -483,6 +498,7 @@ const Home = () => {
                 saveTransaksi();
                 updateBinWeight();
                 UpdateStatusContainer();
+                UpdateDataFromStep2();
                 sendDataPanasonicServer();
                 
 
