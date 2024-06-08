@@ -375,7 +375,7 @@ const Home = () => {
     const CheckBinCapacity = async () => {
         try {
             console.log(container);
-            const response = await axios.post('http://localhost:5000/CheckBinCapacity', {
+            const response = await apiClient.post('http://localhost:5000/CheckBinCapacity', {
                 line: container.line,
                 neto: neto
             }).then(x => {
