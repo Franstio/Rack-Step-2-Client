@@ -372,6 +372,21 @@ const Home = () => {
         }
     }
 
+    const UpdateStatusContainer = async () => {
+        try {
+            const response = await apiClient.post('http://localhost:5000/UpdateStatusContainer', {
+                namee: containerName,
+                status: ""
+            }).then(x => {
+                const res = x.data;
+                console.log(res);
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     const CheckBinCapacity = async () => {
         try {
             console.log(container);
@@ -467,6 +482,7 @@ const Home = () => {
                 }
                 saveTransaksi();
                 updateBinWeight();
+                UpdateStatusContainer();
                 sendDataPanasonicServer();
                 
 
