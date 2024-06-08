@@ -157,6 +157,29 @@ const Home = () => {
         }
     }
 
+    const sendDataPanasonicServerCollection = async () => {
+        //const _finalNeto = getWeight();
+        try {
+            const response = await apiClient.post(`http://192.168.205.128/api/pid/pidatalog`, {
+                badgeno: "123",
+                logindate: '',
+                stationname: "2-PCL",
+                frombinname: "2-PCL-1-TM",
+                tobinname: "2-PCL-1-TM",
+                weight: 0,
+                activity: container.type
+
+            });
+            if (response.status != 200) {
+                console.log(response);
+                return;
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     async function sendRackOpen(rack) {
         try {
             //console.log(container);
@@ -353,7 +376,7 @@ const Home = () => {
         try {
             console.log(container);
             const response = await axios.post('http://localhost:5000/CheckBinCapacity', {
-                IdWaste: container.IdWaste,
+                line: container.line,
                 neto: neto
             }).then(x => {
                 const res = x.data;
