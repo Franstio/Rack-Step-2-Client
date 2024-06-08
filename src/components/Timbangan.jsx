@@ -390,7 +390,7 @@ const Home = () => {
     const UpdateDataFromStep2 = async () => {
         try {
             const response = await apiClient.post('http://192.168.205.111:5000/UpdateDataFromStep2', {
-                containerId: container.containerId,
+                idContainer: container.containerId,
                 status: "Done"
             }).then(x => {
                 const res = x.data;
