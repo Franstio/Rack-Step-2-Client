@@ -375,7 +375,7 @@ const Home = () => {
     const UpdateStatusContainer = async () => {
         try {
             const response = await apiClient.post('http://localhost:5000/UpdateStatusContainer', {
-                namee: containerName,
+                name: containerName,
                 status: ""
             }).then(x => {
                 const res = x.data;
