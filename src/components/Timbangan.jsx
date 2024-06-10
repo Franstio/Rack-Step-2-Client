@@ -245,9 +245,9 @@ const Home = () => {
                         setStatus(res.data.container.status);
                         console.log(res.data.container.status)
 
-                        if (status == 'Waiting Dispose To Step 2') {
+                        if (res.data.container.status == 'Waiting Dispose To Step 2') {
                 
-                        } else if (status === null || status === '') {
+                        } else if (res.data.container.status === null || res.data.container.status === '') {
                             alert("request dari step 1");
                             return; 
                         }
