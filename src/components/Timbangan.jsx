@@ -240,8 +240,15 @@ const Home = () => {
                             alert("Waste Mismatch");
                             return;
                         }*/
-                        console.log(res.data.container);
+                        console.log(res.data.container)
                         setWaste(res.data.container.waste);
+                        
+                        if (status == 'Waiting Dispose To Step 2') {
+                
+                        } else if (status === null || status === '') {
+                            alert("request dari step 1");
+                            return; 
+                        }
                        
                         if (res.data.container.type == "Collection") {
                             const _bin = res.data.container.waste.bin.find(item => item.name == res.data.container.name);
@@ -279,13 +286,6 @@ const Home = () => {
                         setIsSubmitAllowed(true);
                     } else {
                         alert("Countainer not found");
-                        
-                        if (status == 'Waiting Dispose To Step 2') {
-                
-                        } else if (status === null || status === '') {
-                            alert("request dari step 1");
-                            return; 
-                        }
                         setUser(null);
                         setContainer(null);
                         setContainerName(res.data.name || '');
