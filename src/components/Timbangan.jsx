@@ -278,7 +278,7 @@ const Home = () => {
                         else{
                             setContainer(res.data.container);
                             setType(res.data.container.type);
-                            setStatus(res.data.container.status);
+                            //setStatus(res.data.container.status);
                             setName(res.data.container.name);
                             //setShowModalInfoScales(true);
                             setmessage('Tekan Tombol Submit');
