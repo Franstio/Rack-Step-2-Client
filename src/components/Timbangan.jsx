@@ -242,7 +242,8 @@ const Home = () => {
                         }*/
                         console.log(res.data.container)
                         setWaste(res.data.container.waste);
-                        
+                        setStatus(res.data.container.status);
+
                         if (status == 'Waiting Dispose To Step 2') {
                 
                         } else if (status === null || status === '') {
