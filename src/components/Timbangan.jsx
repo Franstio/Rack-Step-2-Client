@@ -397,8 +397,9 @@ const Home = () => {
     }
 
     const UpdateDataFromStep2 = async () => {
+        //console.log(idContainer)
         try {
-            const response = await apiClient.post('http://192.168.205.111:5000/UpdateDataFromStep2', {
+            const response = await apiClient.post('http://192.168.205.111:5000/UpdateStatus', {
                 idContainer: container.containerId,
                 status: "Done"
             }).then(x => {
