@@ -279,6 +279,13 @@ const Home = () => {
                         setIsSubmitAllowed(true);
                     } else {
                         alert("Countainer not found");
+                        
+                        if (status == 'Waiting Dispose To Step 2') {
+                
+                        } else if (status === null || status === '') {
+                            alert("request dari step 1");
+                            return; 
+                        }
                         setUser(null);
                         setContainer(null);
                         setContainerName(res.data.name || '');
@@ -308,12 +315,12 @@ const Home = () => {
                 return;
             }
         
-            if (status == 'Test') {
+            /* if (status == 'Waiting Dispose To Step 2') {
                 
             } else if (status === null || status === '') {
                 alert("request dari step 1");
                 return; 
-            }
+            } */
         
             await CheckBinCapacity();
             setShowModalConfirmWeight(true);
