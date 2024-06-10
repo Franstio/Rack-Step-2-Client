@@ -400,7 +400,7 @@ const Home = () => {
         //console.log(idContainer)
         try {
             const response = await apiClient.post('http://192.168.205.111:5000/UpdateStatus', {
-                idContainer: container.containerId,
+                containerName: container.name,
                 status: "Done"
             }).then(x => {
                 const res = x.data;
