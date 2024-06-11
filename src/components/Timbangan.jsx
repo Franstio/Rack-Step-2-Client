@@ -703,9 +703,9 @@ const Home = () => {
                             />
                             <button className='block w-full border rounded py-2 flex justify-center items-center font-bold mt-5 bg-sky-400 text-white text-lg' disabled={!isSubmitAllowed} onClick={toggleModal}>Submit</button>
                             <div className='text-lg mt-5'>
-                                <p>Username: {user?.username} </p>
+                                <p>Employee Name: {user?.username} </p>
                                 <p>Container Id: {container?.name}</p>
-                                <p>Type Waste: {container?.waste.name}</p>
+                                <p>Waste: {container?.waste.name}</p>
                             </div>
                         </div>
                         </div>
@@ -747,14 +747,13 @@ const Home = () => {
 
                             <div className="bg-white rounded p-8 max-w-md mx-auto z-50">
                                 <div className="text-center mb-4">
-
                                 </div>
                                 <form>
                                     <Typography variant="h6" align="center" gutterBottom>
                                         <p>{rackname} Telah Dibuka!</p>
                                     </Typography>
                                     <div className="flex justify-center mt-5">
-                                        <button type="button" onClick={()=>setShowModalConfirmWeight(false)} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mr-2 rounded">Ok</button>
+                                        <button type="button" autoFocus={true} onClick={()=>setShowModalConfirmWeight(false)} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mr-2 rounded">Ok</button>
                                     </div>
                                 </form>
                             </div>
