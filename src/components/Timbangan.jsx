@@ -701,6 +701,7 @@ const Home = () => {
                             <p>Scan Please</p>
                             <input
                                 type="text"
+                                autoFocus={true}
                                 onChange={e => setScanData(e.target.value)}
                                 value={scanData}
                                 name="text"
