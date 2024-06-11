@@ -81,6 +81,12 @@ const Home = () => {
             backgroundColor: value > 70 ? '#f44336' : theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
         },
     }));
+
+    useEffect(() => {
+        if (!setShowModalConfirmWeight && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [showModalConfirmWeight]);
     useEffect(()=>{
         setSocket(io('http://localhost:5000/'));
     },[])
