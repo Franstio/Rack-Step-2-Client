@@ -56,6 +56,7 @@ const Home = () => {
     const [showModalConfirmWeight, setShowModalConfirmWeight] = useState(false);
     const [wasteId, setWasteId] = useState(null);
     const [type, setType] = useState("");
+    const inputRef = useRef(null);
     const [bottomLockHostData, setBottomLockData] = useState({ binId: ''});
     const toggleModal = () => {
         freezeNeto(true);
@@ -703,6 +704,7 @@ const Home = () => {
                                 onChange={e => setScanData(e.target.value)}
                                 value={scanData}
                                 name="text"
+                                ref={inputRef}
                                 onKeyDown={e => handleKeyPress(e)}
                                 className="block w-full rounded-md border-0 py-2 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="luGGIatKmKvdMkcxpKc8SZD64ex5W0"
