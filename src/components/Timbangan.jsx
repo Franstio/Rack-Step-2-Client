@@ -88,6 +88,12 @@ const Home = () => {
             inputRef.current.focus();
         }
     }, [showModalConfirmWeight]);
+
+    const handleKeyPressModal = (e) => {
+        if (e.key === 'Enter') {
+            setShowModalConfirmWeight(false);
+        }
+    };
     useEffect(()=>{
         setSocket(io('http://localhost:5000/'));
     },[])
@@ -750,7 +756,7 @@ const Home = () => {
 
             <div className='flex justify-start'>
                 {showModalConfirmWeight && (
-                    <div className="fixed z-10 inset-0 overflow-y-auto">
+                    <div className="fixed z-10 inset-0 overflow-y-auto"onKeyDown={handleKeyPressModal}>
                         <div className="flex items-center justify-center min-h-screen">
                             <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
