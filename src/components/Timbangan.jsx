@@ -534,9 +534,6 @@ const Home = () => {
                     alert("Mismatch Name: " + scanData);
                     return;
                 }
-                if (sensor === 1 )
-                    alert("tutup rack")
-                return;
                 saveTransaksi();
                 updateBinWeight();
                 UpdateStatusContainer();
