@@ -365,7 +365,7 @@ const Home = () => {
     const saveTransaksi = async () => {
         try
         {
-        const res = axios.post("http://localhost:5000/SaveTransaksi", {
+        const res =  await axios.post("http://localhost:5000/SaveTransaksi", {
             payload: {
                 idContainer: container.containerId,
                 badgeId: user.badgeId,
