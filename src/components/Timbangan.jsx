@@ -85,7 +85,7 @@ const Home = () => {
     }));
 
     useEffect(() => {
-        if (!setShowModalConfirmWeight && inputRef.current) {
+        if (setShowModalConfirmWeight && inputRef.current) {
             inputRef.current.focus();
         }
     }, [showModalConfirmWeight]);
