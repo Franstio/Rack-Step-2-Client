@@ -208,7 +208,7 @@ const Home = () => {
         }
     };
 
-    async function sendSensorRack() {
+  /*   async function sendSensorRack() {
         try {
             //console.log(container);
             const response = await axios.post(`http://PCS-02.Local:5000/sensorcheck`, {
@@ -220,7 +220,7 @@ const Home = () => {
         } catch (error) {
             console.error(error);
         }
-    };
+    }; */
 
     async function sendRackOpenCollection(bin) {
         try {
