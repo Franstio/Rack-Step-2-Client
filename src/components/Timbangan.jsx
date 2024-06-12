@@ -362,8 +362,10 @@ const Home = () => {
         }
         setShowModal(false);
     }
-    const saveTransaksi = () => {
-        axios.post("http://localhost:5000/SaveTransaksi", {
+    const saveTransaksi = async () => {
+        try
+        {
+        const res = axios.post("http://localhost:5000/SaveTransaksi", {
             payload: {
                 idContainer: container.containerId,
                 badgeId: user.badgeId,
@@ -372,12 +374,19 @@ const Home = () => {
                 type: 'Dispose',
             },
             rackId: rackId
-        }).then(res => {
+            });
             setWasteId(container.idWaste);
             setIsSubmitAllowed(false);
             setScanData('');
+            return true;
+        }
+        catch (er)
+        {
             
-        });
+            console.log(er);
+            alert("Transaksi fail, please check sensor");
+            return false;
+        }
     };
 
     const saveTransaksiCollection = (_container) => {
@@ -523,7 +532,7 @@ const Home = () => {
             console.error(error);
         }
     }
-    const handleKeyPress = (e) => {
+    const handleKeyPress = async (e) => {
         if (e.key === 'Enter') {
             if (user == null)
                 handleScan();
@@ -534,7 +543,8 @@ const Home = () => {
                     alert("Mismatch Name: " + scanData);
                     return;
                 }
-                saveTransaksi();
+                if (!(await saveTransaksi()))
+                    return;
                 updateBinWeight();
                 UpdateStatusContainer();
                 UpdateDataFromStep2();
