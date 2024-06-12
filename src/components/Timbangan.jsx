@@ -376,7 +376,7 @@ const Home = () => {
             },
             //rackId: rackId,
             clientId: clientId,
-            address: sensor
+            address: sensor // frans pake sensor     
 
             });
             setWasteId(container.idWaste);
@@ -471,7 +471,7 @@ const Home = () => {
                 setRackname(res.bins[0].name);
                 setRackId(res.bins[0].rackId);
                 setClientId(res.bins[0].clientId);
-                setSensor(res.bins[0],sensor);
+                setSensor(res.bins[0].sensor);//push lagi. oke.
                 setAddress(res.bins[0].address);
                 setValue(res.bins[0].value);
                 sendRackOpen(res.bins[0]);
