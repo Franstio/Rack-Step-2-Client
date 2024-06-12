@@ -54,6 +54,7 @@ const Home = () => {
     const [isSubmitAllowed, setIsSubmitAllowed] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showModalConfirmWeight, setShowModalConfirmWeight] = useState(false);
+    const [showModalDone, setShowModalDone] = useState(false);
     const [wasteId, setWasteId] = useState(null);
     const [type, setType] = useState("");
     const inputRef = useRef(null);
@@ -205,7 +206,21 @@ const Home = () => {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
+
+    async function sendSensorRack() {
+        try {
+            //console.log(container);
+            const response = await axios.post(`http://PCS-02.Local:5000/sensorcheck`, {
+                clientId: rack.clientId,
+                address: rack.address,
+                value: rack.value
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     async function sendRackOpenCollection(bin) {
         try {
@@ -354,8 +369,9 @@ const Home = () => {
                 badgeId: user.badgeId,
                 IdWaste: container.IdWaste,
                 weight: neto,
-                type: 'Dispose'
-            }
+                type: 'Dispose',
+            },
+            rackId: rackId
         }).then(res => {
             setWasteId(container.idWaste);
             setIsSubmitAllowed(false);
@@ -518,13 +534,15 @@ const Home = () => {
                     alert("Mismatch Name: " + scanData);
                     return;
                 }
+                if (sensor === 1 )
+                    alert("tutup rack")
+                return;
                 saveTransaksi();
                 updateBinWeight();
                 UpdateStatusContainer();
                 UpdateDataFromStep2();
                 sendDataPanasonicServer();
-                
-
+                setShowModalDone(true);
             }
             else {
                 handleScan1();
@@ -714,7 +732,7 @@ const Home = () => {
                                 onKeyDown={e => handleKeyPress(e)}
                                 ref={inputRef}
                                 className="block w-full rounded-md border-0 py-2 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                placeholder="luGGIatKmKvdMkcxpKc8SZD64ex5W0"
+                                placeholder=""
                             />
                             <button className='block w-full border rounded py-2 flex justify-center items-center font-bold mt-5 bg-sky-400 text-white text-lg' disabled={!isSubmitAllowed} onClick={toggleModal}>Submit</button>
                             <div className='text-lg mt-5'>
@@ -756,7 +774,7 @@ const Home = () => {
 
             <div className='flex justify-start'>
                 {showModalConfirmWeight && (
-                    <div className="fixed z-10 inset-0 overflow-y-auto"onKeyDown={handleKeyPressModal}>
+                    <div className="fixed z-10 inset-0 overflow-y-auto" onKeyDown={handleKeyPressModal}>
                         <div className="flex items-center justify-center min-h-screen">
                             <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
@@ -775,11 +793,33 @@ const Home = () => {
                         </div>
                     </div>
                 )}
-                <p>Instruksi: {message}</p>
             </div>
+
+            <div className='flex justify-start'>
+                {showModalDone && (
+                    <div className="fixed z-10 inset-0 overflow-y-auto">
+                        <div className="flex items-center justify-center min-h-screen">
+                            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+                            <div className="bg-white rounded p-8 max-w-md mx-auto z-50">
+                                <div className="text-center mb-4">
+                                </div>
+                                <form>
+                                    <Typography variant="h6" align="center" gutterBottom>
+                                        <p>Data Telah Disimpan!</p>
+                                    </Typography>
+                                    <div className="flex justify-center mt-5">
+                                        <button type="button" autoFocus={true} onClick={()=>setShowModalDone(false)} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mr-2 rounded">Ok</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <p>Instruksi: {message}</p>
             <footer className='flex-1 rounded border flex justify-center gap-40 p-3 bg-white'  >
                 <p>Server Status: 192.168.1.5 Online</p>
-                
             </footer>
         </main >
     );
