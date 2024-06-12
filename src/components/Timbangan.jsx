@@ -28,6 +28,7 @@ const Home = () => {
     const [Scales50Kg, setScales50Kg] = useState({});
     const [scanData, setScanData] = useState('');
     const [username, setUsername] = useState('');
+    const [sensor, setSensor] = useState('');
     const [neto, setNeto] = useState(0);
     const [isFreeze, freezeNeto] = useState(false);
     const [isFinalStep, setFinalStep] = useState(false);
@@ -373,7 +374,10 @@ const Home = () => {
                 weight: neto,
                 type: 'Dispose',
             },
-            rackId: rackId
+            //rackId: rackId,
+            clientId: clientId,
+            address: sensor
+
             });
             setWasteId(container.idWaste);
             setIsSubmitAllowed(false);
@@ -467,6 +471,7 @@ const Home = () => {
                 setRackname(res.bins[0].name);
                 setRackId(res.bins[0].rackId);
                 setClientId(res.bins[0].clientId);
+                setSensor(res.bins[0],sensor);
                 setAddress(res.bins[0].address);
                 setValue(res.bins[0].value);
                 sendRackOpen(res.bins[0]);
