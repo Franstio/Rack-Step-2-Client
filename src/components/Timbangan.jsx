@@ -417,6 +417,7 @@ const Home = () => {
             }).then(x => {
                 const res = x.data;
                 console.log(res);
+                sendDataPanasonicServerCollection();
             });
         }
         catch (error) {
