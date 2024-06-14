@@ -172,17 +172,17 @@ const Home = () => {
         }
     };
 
-    const sendDataPanasonicServerCollection = async () => {
+    const sendDataPanasonicServerCollection = async (_container) => {
         try {
-            console.log(container);
+            console.log(_container);
             const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
                 stationname: "2-PCL",
                 frombinname: "2-PCL-1-TM",
                 tobinname: "2-PCL-1-TM",
-                weight: container.weight,
-                activity: container.type
+                weight: _container.weight,
+                activity: "Collection"
 
             });
             if (response.status != 200) {
@@ -292,10 +292,11 @@ const Home = () => {
                             console.log(_bin);
                             const collectionPayload = {...res.data.container,weight: _bin.weight};
                             saveTransaksiCollection(collectionPayload);
+                            
                             setBottomLockData({ binId: _bin.rackId });
                             console.log(collectionPayload);
                             sendRackOpenCollection(_bin);
-                            //sendDataPanasonicServerCollection();
+                            sendDataPanasonicServerCollection(collectionPayload);
                             setShowModal(false);
                             setScanData('');
                             setUser(null);
