@@ -139,7 +139,8 @@ const Home = () => {
             new Promise(async ()=>
                 {
                     console.log({bottomLockHostData:bottomLockHostData});
-                    await UpdateBinWeightCollection();            
+                    await UpdateBinWeightCollection();
+                    await sendDataPanasonicServerCollection();            
                   //  setinstruksimsg("Buka Penutup Bawah");
                     Promise.resolve();
                 }).then(()=>{
@@ -298,7 +299,7 @@ const Home = () => {
                             setScanData('');
                             setUser(null);
                             setContainer(null);
-                            sendDataPanasonicServerCollection();
+                            //sendDataPanasonicServerCollection();
                             //sendType(_bin.name_hostname,'Collection');
                             //setBinname(_bin.name);
                             //setinstruksimsg('')
