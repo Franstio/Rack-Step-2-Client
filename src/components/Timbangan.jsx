@@ -272,7 +272,7 @@ const Home = () => {
                         setWaste(res.data.container.waste);
                         setStatus(res.data.container.status);
                         console.log(res.data.container.status)
-                        sendDataPanasonicServerCollection();
+                        //sendDataPanasonicServerCollection();
 
                         if (res.data.container.status == 'Waiting Dispose To Step 2') {
                 
@@ -294,11 +294,11 @@ const Home = () => {
                             setBottomLockData({ binId: _bin.rackId });
                             console.log(collectionPayload);
                             sendRackOpenCollection(_bin);
+                            sendDataPanasonicServerCollection();
                             setShowModal(false);
                             setScanData('');
                             setUser(null);
                             setContainer(null);
-                           // sendDataPanasonicServerCollection();
                             //sendType(_bin.name_hostname,'Collection');
                             //setBinname(_bin.name);
                             //setinstruksimsg('')
