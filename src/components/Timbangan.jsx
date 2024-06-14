@@ -139,14 +139,12 @@ const Home = () => {
             new Promise(async ()=>
                 {
                     console.log({bottomLockHostData:bottomLockHostData});
+                    await sendDataPanasonicServerCollection();
                     await UpdateBinWeightCollection();
-                    //await sendDataPanasonicServerCollection();            
-                  //  setinstruksimsg("Buka Penutup Bawah");
                     Promise.resolve();
                 }).then(()=>{
                 setBottomLockData({binId:''});
                 //setinstruksimsg("buka penutup bawah");
-                sendDataPanasonicServerCollection();
             });
         }
     }, [bottomLockHostData]);
@@ -274,6 +272,7 @@ const Home = () => {
                         setWaste(res.data.container.waste);
                         setStatus(res.data.container.status);
                         console.log(res.data.container.status)
+                        sendDataPanasonicServerCollection();
 
                         if (res.data.container.status == 'Waiting Dispose To Step 2') {
                 
@@ -299,7 +298,7 @@ const Home = () => {
                             setScanData('');
                             setUser(null);
                             setContainer(null);
-                            sendDataPanasonicServerCollection();
+                           // sendDataPanasonicServerCollection();
                             //sendType(_bin.name_hostname,'Collection');
                             //setBinname(_bin.name);
                             //setinstruksimsg('')
