@@ -152,7 +152,7 @@ const Home = () => {
     const sendDataPanasonicServer = async () => {
         //const _finalNeto = getWeight();
         try {
-            const response = await apiClient.post(`http://192.168.205.128/api/pid/pidatalog`, {
+            const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
                 stationname: "2-PCL",
@@ -170,7 +170,7 @@ const Home = () => {
         catch (error) {
             console.log(error);
         }
-    }
+    };
 
     const sendDataPanasonicServerCollection = async () => {
         //const _finalNeto = getWeight();
