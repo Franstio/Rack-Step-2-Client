@@ -140,12 +140,13 @@ const Home = () => {
                 {
                     console.log({bottomLockHostData:bottomLockHostData});
                     await UpdateBinWeightCollection();
-                    await sendDataPanasonicServerCollection();            
+                    //await sendDataPanasonicServerCollection();            
                   //  setinstruksimsg("Buka Penutup Bawah");
                     Promise.resolve();
                 }).then(()=>{
                 setBottomLockData({binId:''});
                 //setinstruksimsg("buka penutup bawah");
+                sendDataPanasonicServerCollection();
             });
         }
     }, [bottomLockHostData]);
@@ -298,7 +299,7 @@ const Home = () => {
                             setScanData('');
                             setUser(null);
                             setContainer(null);
-                            //sendDataPanasonicServerCollection();
+                            sendDataPanasonicServerCollection();
                             //sendType(_bin.name_hostname,'Collection');
                             //setBinname(_bin.name);
                             //setinstruksimsg('')
@@ -407,7 +408,6 @@ const Home = () => {
         }).then(res => {
             setWaste(null);
             setScanData('');
-            sendDataPanasonicServerCollection();
         });
     };
 
