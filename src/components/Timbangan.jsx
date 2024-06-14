@@ -172,16 +172,16 @@ const Home = () => {
         }
     };
 
-    const sendDataPanasonicServerCollection = async () => {
+    const sendDataPanasonicServerCollection = async (_container) => {
         //const _finalNeto = getWeight();
         try {
-            const response = await apiClient.post(`http://192.168.205.128/api/pid/pidatalog`, {
+            const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
                 stationname: "2-PCL",
                 frombinname: "2-PCL-1-TM",
                 tobinname: "2-PCL-1-TM",
-                weight: 0,
+                weight: _container.weight,
                 activity: container.type
 
             });
@@ -298,6 +298,7 @@ const Home = () => {
                             setScanData('');
                             setUser(null);
                             setContainer(null);
+                            sendDataPanasonicServerCollection();
                             //sendType(_bin.name_hostname,'Collection');
                             //setBinname(_bin.name);
                             //setinstruksimsg('')
