@@ -181,7 +181,7 @@ const Home = () => {
                 stationname: "2-PCS-SP",
                 frombinname: "1-PCS-SP-SR-B1",
                 tobinname: "2-PCS-5",
-                weight: _container.weight,
+                weight: "0",
                 activity: "Collection"
 
             });
