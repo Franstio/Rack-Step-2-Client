@@ -178,9 +178,9 @@ const Home = () => {
             const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
-                stationname: "2-PCL",
-                frombinname: "2-PCL-1-TM",
-                tobinname: "2-PCL-1-TM",
+                stationname: "2-PCS-SP",
+                frombinname: "1-PCS-SP-SR-B1",
+                tobinname: "2-PCS-5",
                 weight: _container.weight,
                 activity: "Collection"
 
