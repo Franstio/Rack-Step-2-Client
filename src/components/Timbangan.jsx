@@ -139,7 +139,7 @@ const Home = () => {
             new Promise(async ()=>
                 {
                     console.log({bottomLockHostData:bottomLockHostData});
-                    await sendDataPanasonicServerCollection();
+                    //await sendDataPanasonicServerCollection();
                     await UpdateBinWeightCollection();
                     Promise.resolve();
                 }).then(()=>{
