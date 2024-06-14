@@ -139,7 +139,7 @@ const Home = () => {
             new Promise(async ()=>
                 {
                     console.log({bottomLockHostData:bottomLockHostData});
-                    sendDataPanasonicServerCollection();
+                    await sendDataPanasonicServerCollection();
                     await UpdateBinWeightCollection();
                     Promise.resolve();
                 }).then(()=>{
@@ -172,15 +172,16 @@ const Home = () => {
         }
     };
 
-    const sendDataPanasonicServerCollection = async (_container) => {
+    const sendDataPanasonicServerCollection = async () => {
         try {
+            console.log(container);
             const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
                 stationname: "2-PCL",
                 frombinname: "2-PCL-1-TM",
                 tobinname: "2-PCL-1-TM",
-                weight: _container.weight,
+                weight: container.weight,
                 activity: container.type
 
             });
@@ -294,7 +295,7 @@ const Home = () => {
                             setBottomLockData({ binId: _bin.rackId });
                             console.log(collectionPayload);
                             sendRackOpenCollection(_bin);
-                            sendDataPanasonicServerCollection();
+                            //sendDataPanasonicServerCollection();
                             setShowModal(false);
                             setScanData('');
                             setUser(null);
