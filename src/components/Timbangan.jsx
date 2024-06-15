@@ -485,7 +485,7 @@ const Home = () => {
         }
     };
 
-    const UpdateDataFromStep2ToPanasonic = async () => {
+    const UpdateDataFromStep2ToPanasonic = async (idscarplog) => {
         try {
             const response = await apiClient.put(`http://192.168.247.128/api/pid/step1/${idscarplog}`, {
                 status: "Done"
