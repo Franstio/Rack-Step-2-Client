@@ -384,7 +384,6 @@ const Home = () => {
             } */
         
             await CheckBinCapacity();
-            await getidscaplog();
             setShowModalConfirmWeight(true);
             setIsSubmitAllowed(false);
             setFinalStep(true); 
@@ -485,9 +484,9 @@ const Home = () => {
         }
     };
 
-    const UpdateDataFromStep2ToPanasonic = async () => {
+    const UpdateDataFromStep2ToPanasonic = async (scraplogid) => {
         try {
-            const response = await apiClient.put(`http://192.168.247.128/api/pid/step1/${idscarplog}`, {
+            const response = await apiClient.put(`http://192.168.247.128/api/pid/step1/${scraplogid}`, {
                 status: "Done"
             }).then(x => {
                 const res = x.data;
@@ -499,7 +498,7 @@ const Home = () => {
         }
     };
 
-    const getidscaplog = async () => {
+    const getidscraplog = async () => {
         try {
             const response = await apiClient.post(`http://192.168.247.111:5000/Getidscarplog`, {
                 status: container.status,
@@ -509,11 +508,12 @@ const Home = () => {
                 console.log(res);
             });
             console.log(response.data);
-            const result = console.log(response.data.idscraplog)
-             setidscarplog(result)
+            return response.data.idscraplog;
+                
         }
         catch (error) {
             console.log(error);
+            return null;
         }
     };
 
@@ -611,13 +611,20 @@ const Home = () => {
                     alert("Mismatch Name: " + scanData);
                     return;
                 }
+                const scraplogid = await getidscraplog();
+                if (scraplogid == null)
+                {
+                    alert("Scrap Log Id not found,cancelling process");
+                    return;
+                }
                 if (!(await saveTransaksi()))
                     return;
                 updateBinWeight();
                 UpdateStatusContainer();
                 UpdateDataFromStep2();
                 await sendDataPanasonicServer();
-                await UpdateDataFromStep2ToPanasonic();
+                
+                await UpdateDataFromStep2ToPanasonic(scraplogid);
                 await sendDataWeightPanasonicServer();
                 setShowModalDone(true);
             }
