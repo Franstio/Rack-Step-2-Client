@@ -191,7 +191,7 @@ const Home = () => {
     const sendDataWeightPanasonicServer = async () => {
         try {
             const response = await apiClient.post(`http://192.168.247.128/api/pid/sendWeight`, {
-                binname: containerName,
+                binname: container.name,
                 weight: neto,
             });
             if (response.status != 200) {
@@ -485,7 +485,7 @@ const Home = () => {
         }
     };
 
-    const UpdateDataFromStep2ToPanasonic = async (idscarplog) => {
+    const UpdateDataFromStep2ToPanasonic = async () => {
         try {
             const response = await apiClient.put(`http://192.168.247.128/api/pid/step1/${idscarplog}`, {
                 status: "Done"
