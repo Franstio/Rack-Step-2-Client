@@ -611,7 +611,7 @@ const Home = () => {
                     alert("Mismatch Name: " + scanData);
                     return;
                 }
-                const scraplogid = await getidscraplog();
+                const scraplogid = await getidscraplog(response.data.idscraplog);
                 console.log(scraplogid);
                 if (scraplogid == null)
                 {
