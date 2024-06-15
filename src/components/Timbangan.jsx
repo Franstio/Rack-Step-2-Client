@@ -145,7 +145,7 @@ const Home = () => {
 
     const sendDataPanasonicServer = async () => {
         try {
-            const response = await apiClient.post(`http://192.168.247.128/api/pid/step1`, {
+            const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
                 stationname: "2-PCS-SP",
