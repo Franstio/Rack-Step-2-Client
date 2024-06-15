@@ -501,7 +501,7 @@ const Home = () => {
 
     const getidscaplog = async () => {
         try {
-            const response = await apiClient.post(`http://localhost:5000/Getidscarplog`, {
+            const response = await apiClient.post(`http://192.168.247.111:5000/Getidscarplog`, {
                 bin_qr: container.name,
                 status: container.status,
                 idContainer : container.containerId
