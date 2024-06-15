@@ -612,6 +612,7 @@ const Home = () => {
                     return;
                 }
                 const scraplogid = await getidscraplog();
+                console.log(scraplogid);
                 if (scraplogid == null)
                 {
                     alert("Scrap Log Id not found,cancelling process");
