@@ -1,20 +1,9 @@
-
 import React, { useState, useEffect, Fragment,useRef } from "react";
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { IoSettingsOutline } from "react-icons/io5";
 import { FiRefreshCcw } from "react-icons/fi";
-import {
-    Container,
-    Card,
-    CardContent,
-    TextField,
-    Button,
-    Typography,
-    CircularProgress,
-    Grid,
-} from '@mui/material';
-
+import {Typography} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import axios from "axios";
@@ -43,6 +32,7 @@ const Home = () => {
     const [value, setValue] = useState('');
     const [status, setStatus] = useState('');
     const [name, setName] = useState('');
+    const [idscarplog, setidscarplog] = useState('');
     const [socket,setSocket] = useState(); // Sesuaikan dengan alamat server
     //    const socket = null;
     const navigation = [
@@ -90,6 +80,10 @@ const Home = () => {
             inputRef.current.focus();
         }
     }, [showModalConfirmWeight]);
+
+/*     useEffect(() => {
+        getidscaplog();
+      }, []); */
 
     const handleKeyPressModal = (e) => {
         if (e.key === 'Enter') {
@@ -150,9 +144,8 @@ const Home = () => {
     }, [bottomLockHostData]);
 
     const sendDataPanasonicServer = async () => {
-        //const _finalNeto = getWeight();
         try {
-            const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
+            const response = await apiClient.post(`http://192.168.18.85/api/pid/step1`, {
                 badgeno: "123",
                 logindate: '',
                 stationname: "2-PCS-SP",
@@ -184,6 +177,37 @@ const Home = () => {
                 weight: "0",
                 activity: "Collection"
 
+            });
+            if (response.status != 200) {
+                console.log(response);
+                return;
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    const sendDataWeightPanasonicServer = async () => {
+        try {
+            const response = await apiClient.post(`http://192.168.247.128/api/pid/sendWeight`, {
+                binname: containerName,
+                weight: neto,
+            });
+            if (response.status != 200) {
+                console.log(response);
+                return;
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+    const sendDataWeightPanasonicServerCollection = async (_container) => {
+        try {
+            const response = await apiClient.post(`http://192.168.247.128/api/pid/sendWeight`, {
+                binname: containerName,
+                weight: "0",
             });
             if (response.status != 200) {
                 console.log(response);
@@ -297,6 +321,7 @@ const Home = () => {
                             console.log(collectionPayload);
                             sendRackOpenCollection(_bin);
                             sendDataPanasonicServerCollection(collectionPayload);
+                            sendDataWeightPanasonicServerCollection(collectionPayload);
                             setShowModal(false);
                             setScanData('');
                             setUser(null);
@@ -305,6 +330,7 @@ const Home = () => {
                             //setBinname(_bin.name);
                             //setinstruksimsg('')
                             setmessage('');
+                           
                             return;
                         }
                         else{
@@ -314,6 +340,7 @@ const Home = () => {
                             setName(res.data.container.name);
                             //setShowModalInfoScales(true);
                             setmessage('Tekan Tombol Submit');
+                           
                         }
                         //setWastename(res.data.container.waste.name);
                         setScanData('');
@@ -357,6 +384,7 @@ const Home = () => {
             } */
         
             await CheckBinCapacity();
+            await getidscaplog();
             setShowModalConfirmWeight(true);
             setIsSubmitAllowed(false);
             setFinalStep(true); 
@@ -392,7 +420,7 @@ const Home = () => {
             
             console.log(er);
             alert("Transaksi fail, please check sensor");
-            return false;
+            return true;
         }
     };
 
@@ -455,7 +483,37 @@ const Home = () => {
         catch (error) {
             console.log(error);
         }
-    }
+    };
+
+    const UpdateDataFromStep2ToPanasonic = async () => {
+        try {
+            const response = await apiClient.put(`http://192.168.205.111/api/pid/step1/${idscarplog}`, {
+                status: "Done"
+            }).then(x => {
+                const res = x.data;
+                console.log(res);
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getidscaplog = async () => {
+        try {
+            const response = await apiClient.post(`http://localhost:5000/Getidscarplog`, {
+                bin_qr: container.name
+            }).then(x => {
+                const res = x.data;
+                console.log(res);
+            });
+            console.log(response.data);
+        }
+        
+        catch (error) {
+            console.log(error);
+        }
+    };
 
     const CheckBinCapacity = async () => {
         try {
@@ -556,7 +614,9 @@ const Home = () => {
                 updateBinWeight();
                 UpdateStatusContainer();
                 UpdateDataFromStep2();
-                sendDataPanasonicServer();
+                await sendDataPanasonicServer();
+                await UpdateDataFromStep2ToPanasonic();
+                await sendDataWeightPanasonicServer();
                 setShowModalDone(true);
             }
             else {
