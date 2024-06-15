@@ -610,13 +610,13 @@ const Home = () => {
                     alert("Mismatch Name: " + scanData);
                     return;
                 }
-              /*   const scraplogid = await getidscraplog();
+                const scraplogid = await getidscraplog();
                 console.log(scraplogid);
                 if (scraplogid == null)
                 {
                     alert("Scrap Log Id not found,cancelling process");
-                    return;
-                } */
+                    //return;
+                }
                 if (!(await saveTransaksi()))
                     return;
                 updateBinWeight();
