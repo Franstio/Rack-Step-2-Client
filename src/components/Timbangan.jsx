@@ -420,7 +420,7 @@ const Home = () => {
             
             console.log(er);
             alert("Transaksi fail, please check sensor");
-            return true;
+            return false;
         }
     };
 
@@ -472,7 +472,7 @@ const Home = () => {
     const UpdateDataFromStep2 = async () => {
         //console.log(idContainer)
         try {
-            const response = await apiClient.post('http://192.168.205.111:5000/UpdateStatus', {
+            const response = await apiClient.post('http://192.168.247.111:5000/UpdateStatus', {
                 containerName: container.name,
                 status: "Done"
             }).then(x => {
@@ -487,7 +487,7 @@ const Home = () => {
 
     const UpdateDataFromStep2ToPanasonic = async () => {
         try {
-            const response = await apiClient.put(`http://192.168.205.111/api/pid/step1/${idscarplog}`, {
+            const response = await apiClient.put(`http://192.168.247.128/api/pid/step1/${idscarplog}`, {
                 status: "Done"
             }).then(x => {
                 const res = x.data;
