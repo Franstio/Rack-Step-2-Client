@@ -502,14 +502,17 @@ const Home = () => {
     const getidscaplog = async () => {
         try {
             const response = await apiClient.post(`http://localhost:5000/Getidscarplog`, {
-                bin_qr: container.name
+                bin_qr: container.name,
+                status: container.status,
+                idContainer : container.containerId
             }).then(x => {
                 const res = x.data;
                 console.log(res);
             });
             console.log(response.data);
+            const result = console.log(response.data)
+             setidscarplog(result)
         }
-        
         catch (error) {
             console.log(error);
         }
