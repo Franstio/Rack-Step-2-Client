@@ -508,7 +508,7 @@ const Home = () => {
                 console.log(res);
             });
             console.log(response.data);
-            return response.data.data.idscraplog;
+            return response.data.idscraplog;
                 
         }
         catch (error) {
@@ -611,7 +611,7 @@ const Home = () => {
                     alert("Mismatch Name: " + scanData);
                     return;
                 }
-                const scraplogid = await getidscraplog(response.data.idscraplog);
+                const scraplogid = await getidscraplog();
                 console.log(scraplogid);
                 if (scraplogid == null)
                 {
