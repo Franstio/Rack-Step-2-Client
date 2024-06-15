@@ -509,7 +509,7 @@ const Home = () => {
                 console.log(res);
             });
             console.log(response.data);
-            const result = console.log(response.data)
+            const result = console.log(response.data.idscraplog)
              setidscarplog(result)
         }
         catch (error) {
