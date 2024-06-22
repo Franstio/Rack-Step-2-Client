@@ -9,7 +9,7 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import axios from "axios";
 import io from 'socket.io-client';
 
-//const socket = io('http://localhost:5000/');
+//const socket = io('http://localhost:5001/');
 const apiClient = axios.create({
     withCredentials: false
 });
@@ -18,7 +18,7 @@ const Home = () => {
     const [scanData, setScanData] = useState('');
     const [username, setUsername] = useState('');
     const [sensor, setSensor] = useState('');
-    const [neto, setNeto] = useState(0);
+    const [neto, setNeto] = useState(3);
     const [isFreeze, freezeNeto] = useState(false);
     const [isFinalStep, setFinalStep] = useState(false);
     const [containerName, setContainerName] = useState('');
@@ -91,7 +91,7 @@ const Home = () => {
         }
     };
     useEffect(()=>{
-        setSocket(io('http://localhost:5000/'));
+        setSocket(io('http://localhost:5001/'));
     },[])
     const CustomLinearProgress = ({ value }) => {
         return (
@@ -125,7 +125,7 @@ const Home = () => {
         //	console.log({w:weight,bin:binWeight,w2:Scales50Kg,c:container});
         if (isFreeze)
             return
-        setNeto(weight)
+//        setNeto(weight)
     }, [Scales50Kg])
 
     useEffect(() => {
@@ -144,12 +144,13 @@ const Home = () => {
     }, [bottomLockHostData]);
 
     const sendDataPanasonicServer = async () => {
+        const idmachine = await getidmachine();
         try {
             const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
-                badgeno: "123",
+                badgeno: user.badgeId,
                 logindate: '',
                 stationname: "2-PCS-SP",
-                frombinname: "1-PCS-SP-SR-B1",
+                frombinname: idmachine,
                 tobinname: "2-PCS-5",
                 weight: neto,
                 activity: type
@@ -166,15 +167,16 @@ const Home = () => {
     };
 
     const sendDataPanasonicServerCollection = async (_container) => {
+        //const totalWeight = await getTotalweight();
         try {
             console.log(_container);
             const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
                 stationname: "2-PCS-SP",
-                frombinname: "1-PCS-SP-SR-B1",
+                frombinname: "2-PCS-5",
                 tobinname: "2-PCS-5",
-                weight: "0",
+                weight: _container.weight,
                 activity: "Collection"
 
             });
@@ -219,10 +221,10 @@ const Home = () => {
         }
     }
 
-    async function sendRackOpen(rack) {
+     async function sendRackOpen(rack) {
         try {
             //console.log(container);
-            const response = await axios.post(`http://PCS-02.Local:5000/rackOpen`, {
+            const response = await axios.post(`http://PCS-02.Local:5001/rackOpen`, {
                 clientId: rack.clientId,
                 address: rack.address,
                 value: rack.value
@@ -231,12 +233,12 @@ const Home = () => {
         } catch (error) {
             console.error(error);
         }
-    };
+    }; 
 
-  /*   async function sendSensorRack() {
+/*   async function sendSensorRack() {
         try {
             //console.log(container);
-            const response = await axios.post(`http://PCS-02.Local:5000/sensorcheck`, {
+            const response = await axios.post(`http://PCS-02.Local:5001/sensorcheck`, {
                 clientId: rack.clientId,
                 address: rack.address,
                 value: rack.value
@@ -249,7 +251,7 @@ const Home = () => {
 
     async function sendRackOpenCollection(bin) {
         try {
-            const response = await axios.post(`http://PCS-02.Local:5000/rackOpen`, {
+            const response = await axios.post(`http://PCS-02.Local:5001/rackOpen`, {
                 clientId: bin.clientid,
                 address: bin.address,
                 value: bin.value
@@ -260,7 +262,7 @@ const Home = () => {
         }
     }
     const handleScan = () => {
-        axios.post('http://localhost:5000/ScanBadgeid', { badgeId: scanData })
+        axios.post('http://localhost:5001/ScanBadgeid', { badgeId: scanData })
             .then(res => {
                 if (res.data.errorS) {
                     alert(res.data.error);
@@ -282,7 +284,7 @@ const Home = () => {
     };
 
     const handleScan1 = () => {
-        apiClient.post('http://localhost:5000/ScanContainer', { containerId: scanData })
+        apiClient.post('http://localhost:5001/ScanContainer', { containerId: scanData })
             .then( (res) => {
                 if (res.data.error) {
                     alert(res.data.error);
@@ -394,15 +396,17 @@ const Home = () => {
         setShowModal(false);
     }
     const saveTransaksi = async () => {
+        const idmachine = await getidmachine();
         try
         {
-        const res =  await axios.post("http://localhost:5000/SaveTransaksi", {
+        const res =  await axios.post("http://localhost:5001/SaveTransaksi", {
             payload: {
                 idContainer: container.containerId,
                 badgeId: user.badgeId,
                 IdWaste: container.IdWaste,
                 weight: neto,
                 type: 'Dispose',
+                idqrmachine: idmachine
             },
             //rackId: rackId,
             clientId: clientId,
@@ -425,7 +429,7 @@ const Home = () => {
 
     const saveTransaksiCollection = (_container) => {
         console.log(_container);
-        apiClient.post("http://localhost:5000/SaveTransaksiCollection", {
+        apiClient.post("http://localhost:5001/SaveTransaksiCollection", {
             payload: {
                 idContainer: _container.containerId,
                 badgeId: user.badgeId,
@@ -441,7 +445,7 @@ const Home = () => {
 
     const UpdateBinWeightCollection = async () => {
         try {
-            const response = await apiClient.post('http://localhost:5000/UpdateBinWeightCollection', {
+            const response = await apiClient.post('http://localhost:5001/UpdateBinWeightCollection', {
                 binId: bottomLockHostData.binId
             }).then(x => {
                 const res = x.data;
@@ -455,7 +459,7 @@ const Home = () => {
 
     const UpdateStatusContainer = async () => {
         try {
-            const response = await apiClient.post('http://localhost:5000/UpdateStatusContainer', {
+            const response = await apiClient.post('http://localhost:5001/UpdateStatusContainer', {
                 name: container.name,
                 status: ""
             }).then(x => {
@@ -471,7 +475,7 @@ const Home = () => {
     const UpdateDataFromStep2 = async () => {
         //console.log(idContainer)
         try {
-            const response = await apiClient.post('http://192.168.247.111:5000/UpdateStatus', {
+            const response = await apiClient.post('http://localhost:5000/UpdateStatus', {
                 containerName: container.name,
                 status: "Done"
             }).then(x => {
@@ -500,15 +504,41 @@ const Home = () => {
 
     const getidscraplog = async () => {
         try {
-            const response = await apiClient.post(`http://192.168.247.111:5000/Getidscarplog`, {
+            const response = await apiClient.post(`http://localhost:5000/Getidscarplog`, {
                 status: container.status,
                 idContainer : container.containerId
-            }).then(x => {
-                const res = x.data;
-                console.log(res);
             });
             console.log(response.data);
-            return response.data.idscraplog;
+            return response.data.data.idscraplog;
+        }
+        catch (error) {
+            console.log(error);
+            return null;
+        }
+    };
+
+    const getidmachine = async () => {
+        try {
+            const response = await apiClient.post(`http://localhost:5000/Getidmachine`, {
+                status: container.status,
+                idContainer : container.containerId
+            });
+            console.log(response.data);
+            return response.data.data.bin;
+        }
+        catch (error) {
+            console.log(error);
+            return null;
+        }
+    };
+
+    const getTotalweight = async () => {
+        try {
+            const response = await apiClient.post(`http://localhost:5001/gettotalweight`, {
+                name: container.waste.bin.name
+            });
+            console.log(response.data);
+            return response.data.data.idscraplog;
         }
         catch (error) {
             console.log(error);
@@ -519,7 +549,7 @@ const Home = () => {
     const CheckBinCapacity = async () => {
         try {
             console.log(container);
-            const response = await apiClient.post('http://localhost:5000/CheckBinCapacity', {
+            const response = await apiClient.post('http://localhost:5001/CheckBinCapacity', {
                 line: container.line,
                 //neto: neto
             }).then(x => {
@@ -536,7 +566,7 @@ const Home = () => {
                 setSensor(res.bins[0].sensor);//push lagi. oke.
                 setAddress(res.bins[0].address);
                 setValue(res.bins[0].value);
-                sendRackOpen(res.bins[0]);
+                //sendRackOpen(res.bins[0]);
             });
             console.log(response);
         }
@@ -547,7 +577,7 @@ const Home = () => {
 
     const closeRollingDoor = async () => {
         try {
-            const response = await axios.post(`http://localhost:5000/rollingdoorDown`, {
+            const response = await axios.post(`http://localhost:5001/rollingdoorDown`, {
                 idRollingDoor: rollingDoorId,
             }).then(x => {
                 setWasteId(null);
@@ -560,7 +590,7 @@ const Home = () => {
     }
     const updateBinWeight = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/UpdateBinWeight', {
+            const response = await axios.post('http://localhost:5001/UpdateBinWeight', {
                 binId: rackId,
                 weight: neto
             }).then(x => {
@@ -582,7 +612,7 @@ const Home = () => {
 
     const updateBinWeightConfirm = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/UpdateBinWeight', {
+            const response = await axios.post('http://localhost:5001/UpdateBinWeight', {
                 binId: rollingDoorId,
                 neto: neto
             }).then(x => {
