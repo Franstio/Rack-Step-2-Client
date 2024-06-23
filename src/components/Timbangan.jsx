@@ -34,6 +34,7 @@ const Home = () => {
     const [name, setName] = useState('');
     const [idscarplog, setidscarplog] = useState('');
     const [socket,setSocket] = useState(); // Sesuaikan dengan alamat server
+    const [apiTarget,setApiTarget] = useState('192.168.22.128');
     //    const socket = null;
     const navigation = [
         { name: 'Dashboard', href: '#', current: true },
@@ -146,7 +147,7 @@ const Home = () => {
     const sendDataPanasonicServer = async () => {
         const idmachine = await getidmachine();
         try {
-            const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
+            const response = await apiClient.post(`http://${apiTarget}/api/pid/pidatalog`, {
                 badgeno: user.badgeId,
                 logindate: '',
                 stationname: "2-PCS-SP",
@@ -170,7 +171,7 @@ const Home = () => {
         //const totalWeight = await getTotalweight();
         try {
             console.log(_container);
-            const response = await apiClient.post(`http://192.168.247.128/api/pid/pidatalog`, {
+            const response = await apiClient.post(`http://${apiTarget}/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
                 stationname: "2-PCS-SP",
@@ -192,7 +193,7 @@ const Home = () => {
 
     const sendDataWeightPanasonicServer = async () => {
         try {
-            const response = await apiClient.post(`http://192.168.247.128/api/pid/sendWeight`, {
+            const response = await apiClient.post(`http://${apiTarget}/api/pid/sendWeight`, {
                 binname: container.name,
                 weight: neto,
             });
@@ -207,7 +208,7 @@ const Home = () => {
     };
     const sendDataWeightPanasonicServerCollection = async (_container) => {
         try {
-            const response = await apiClient.post(`http://192.168.247.128/api/pid/sendWeight`, {
+            const response = await apiClient.post(`http://${apiTarget}/api/pid/sendWeight`, {
                 binname: containerName,
                 weight: "0",
             });
