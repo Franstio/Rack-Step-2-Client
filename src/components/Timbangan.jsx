@@ -225,7 +225,7 @@ const Home = () => {
      async function sendRackOpen(rack) {
         try {
             //console.log(container);
-            const response = await axios.post(`http://PCS-02.Local:5001/rackOpen`, {
+            const response = await axios.post(`http://PCL-10.local:5001/rackOpen`, {
                 clientId: rack.clientId,
                 address: rack.address,
                 value: rack.value
@@ -239,7 +239,7 @@ const Home = () => {
 /*   async function sendSensorRack() {
         try {
             //console.log(container);
-            const response = await axios.post(`http://PCS-02.Local:5001/sensorcheck`, {
+            const response = await axios.post(`http://PCL-10.local:5001/sensorcheck`, {
                 clientId: rack.clientId,
                 address: rack.address,
                 value: rack.value
@@ -252,7 +252,7 @@ const Home = () => {
 
     async function sendRackOpenCollection(bin) {
         try {
-            const response = await axios.post(`http://PCS-02.Local:5001/rackOpen`, {
+            const response = await axios.post(`http://PCL-10.local:5001/rackOpen`, {
                 clientId: bin.clientid,
                 address: bin.address,
                 value: bin.value

@@ -66,7 +66,7 @@ const Home = () => {
 
 
     useEffect(() => {
-        setSocket(io('http://PCS.local:5000/'));
+        setSocket(io('http://2-PCL.local:5000/'));
     }, [])
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -160,7 +160,7 @@ const Home = () => {
     const Login = async () => {
         let response = null;
         try {
-            response = await axios.post("http://pcs.local:5000/login", {
+            response = await axios.post("http://2-PCL.local:5000/login", {
                 password: password
             });
         }
@@ -178,7 +178,7 @@ const Home = () => {
             idRack: selectedRack.clientId
         };
         try{
-        const response = await apiClient.post("http://pcs-02.local:5000/rackOpenManual", data);
+        const response = await apiClient.post("http://PCL-10.local:5000/rackOpenManual", data);
         }
         catch
         {}
