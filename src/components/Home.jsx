@@ -66,7 +66,7 @@ const Home = () => {
 
 
     useEffect(() => {
-        setSocket(io('http://2-PCL.local:5000/'));
+        setSocket(io('http://PCL-10.local:5000/'));
     }, [])
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -119,13 +119,12 @@ const Home = () => {
             }));
         });
     }, [socket]); */
-    const getRackData = () => rackdata;
     useEffect(() => {
         if (!socket) return;
         socket.off('weightUpdated');
         socket.on('weightUpdated', input => {
             // console.log(["Input", data]);
-            let tempRack = getRackData();
+            let tempRack = rackdata;
             console.log([tempRack,input]);
             let findRack = tempRack.find(x=>x.rackId==input.binId);
             console.log([tempRack,findRack,input]);
