@@ -66,7 +66,7 @@ const Home = () => {
 
 
     useEffect(() => {
-        setSocket(io('http://PCL-10.local:5000/'));
+        setSocket(io('http://PCL-10.local:5001/'));
     }, [])
     const toggleModal = () => {
         setShowModal(!showModal);
