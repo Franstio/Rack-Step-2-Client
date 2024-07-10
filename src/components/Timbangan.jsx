@@ -126,7 +126,7 @@ const Home = () => {
         //	console.log({w:weight,bin:binWeight,w2:Scales50Kg,c:container});
         if (isFreeze)
             return
-//        setNeto(weight)
+        setNeto(weight)
     }, [Scales50Kg])
 
     useEffect(() => {
