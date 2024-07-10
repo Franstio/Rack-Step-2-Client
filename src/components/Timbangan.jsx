@@ -34,7 +34,7 @@ const Home = () => {
     const [name, setName] = useState('');
     const [idscarplog, setidscarplog] = useState('');
     const [socket,setSocket] = useState(); // Sesuaikan dengan alamat server
-    const [apiTarget,setApiTarget] = useState('192.168.22.128');
+    const [apiTarget,setApiTarget] = useState(process.env.REACT_APP_PIDSG);
     //    const socket = null;
     const navigation = [
         { name: 'Dashboard', href: '#', current: true },
@@ -92,7 +92,7 @@ const Home = () => {
         }
     };
     useEffect(()=>{
-        setSocket(io('http://localhost:5001/'));
+        setSocket(io(`http://${process.env.REACT_APP_TIMBANGAN}/`));
     },[])
     const CustomLinearProgress = ({ value }) => {
         return (
@@ -265,7 +265,7 @@ const Home = () => {
     const handleScan = () => {
         axios.post('http://localhost:5001/ScanBadgeid', { badgeId: scanData })
             .then(res => {
-                if (res.data.errorS) {
+                if (res.data.error) {
                     alert(res.data.error);
                 } else {
                     if (res.data.user) {
@@ -284,81 +284,88 @@ const Home = () => {
             .catch(err => console.error(err));
     };
 
-    const handleScan1 = () => {
-        apiClient.post('http://localhost:5001/ScanContainer', { containerId: scanData })
-            .then( (res) => {
-                if (res.data.error) {
-                    alert(res.data.error);
-                } else {
-                    if (res.data.container) {
-                        console.log(res.data.container);
-                        /*if ( waste != null && res.data.container.IdWaste != waste.IdWaste ) {
-                            alert("Waste Mismatch");
-                            return;
-                        }*/
-                        console.log(res.data.container)
-                        setWaste(res.data.container.waste);
-                        setStatus(res.data.container.status);
-                        console.log(res.data.container.status)
-                        //sendDataPanasonicServerCollection();
+    const handleScan1 = async () => {
+        try
+        {
+            const res =await  apiClient.post(`http://localhost:5001/ScanContainer`, { containerId: scanData });
+            setScanData('');
+            if (res.data.error) {
+                alert(res.data.error);
+            } else {
+                if (res.data.container) {
+                    console.log(res.data.container);
+                    /*if ( waste != null && res.data.container.IdWaste != waste.IdWaste ) {
+                        alert("Waste Mismatch");
+                        return;
+                    }*/
+                    console.log(res.data.container)
+                    setWaste(res.data.container.waste);
+                    setStatus(res.data.container.status);
+                    console.log(res.data.container.status)
+                    //sendDataPanasonicServerCollection();
 
-                        if (res.data.container.status == 'Waiting Dispose To Step 2') {
-                
-                        } else if (res.data.container.status === null || res.data.container.status === '') {
-                            alert("request dari step 1");
-                            return; 
-                        }
-                       
-                        if (res.data.container.type == "Collection") {
-                            const _bin = res.data.container.waste.bin.find(item => item.name == res.data.container.name);
+                    if (res.data.container.status == 'Waiting Dispose To Step 2') {
+            
+                    } else if (res.data.container.status === null || res.data.container.status === '') {
+                        alert("request dari step 1");
+                        return; 
+                    }
+                   
+                    if (res.data.container.type == "Collection") {
+                        const _bin = res.data.container.waste.bin.find(item => item.name == res.data.container.name);
 
-                            if (!_bin) {
-                                alert("Bin Collection error");
-                                return;
-                            }
-                            console.log(_bin);
-                            const collectionPayload = {...res.data.container,weight: _bin.weight};
-                            saveTransaksiCollection(collectionPayload);
-                            
-                            setBottomLockData({ binId: _bin.rackId });
-                            console.log(collectionPayload);
-                            sendRackOpenCollection(_bin);
-                            sendDataPanasonicServerCollection(collectionPayload);
-                            sendDataWeightPanasonicServerCollection(collectionPayload);
-                            setShowModal(false);
-                            setScanData('');
-                            setUser(null);
-                            setContainer(null);
-                            //sendType(_bin.name_hostname,'Collection');
-                            //setBinname(_bin.name);
-                            //setinstruksimsg('')
-                            setmessage('');
-                           
+                        if (!_bin) {
+                            alert("Bin Collection error");
                             return;
                         }
-                        else{
-                            setContainer(res.data.container);
-                            setType(res.data.container.type);
-                            //setStatus(res.data.container.status);
-                            setName(res.data.container.name);
-                            //setShowModalInfoScales(true);
-                            setmessage('Tekan Tombol Submit');
-                           
-                        }
-                        //setWastename(res.data.container.waste.name);
+                        console.log(_bin);
+                        const collectionPayload = {...res.data.container,weight: _bin.weight};
+                        saveTransaksiCollection(collectionPayload);
+                        
+                        setBottomLockData({ binId: _bin.rackId });
+                        console.log(collectionPayload);
+                        sendRackOpenCollection(_bin);
+                        sendDataPanasonicServerCollection(collectionPayload);
+                        sendDataWeightPanasonicServerCollection(collectionPayload);
+                        setShowModal(false);
                         setScanData('');
-                        setIsSubmitAllowed(true);
-                    } else {
-                        alert("Countainer not found");
                         setUser(null);
                         setContainer(null);
-                        setContainerName(res.data.name || '');
-                        setScanData('');
-                        setIsSubmitAllowed(false);
+                        //sendType(_bin.name_hostname,'Collection');
+                        //setBinname(_bin.name);
+                        //setinstruksimsg('')
+                        setmessage('');
+                       
+                        return;
                     }
+                    else{
+                        setContainer(res.data.container);
+                        setType(res.data.container.type);
+                        //setStatus(res.data.container.status);
+                        setName(res.data.container.name);
+                        //setShowModalInfoScales(true);
+                        setmessage('Tekan Tombol Submit');
+                       
+                    }
+                    //setWastename(res.data.container.waste.name);
+                    setScanData('');
+                    setIsSubmitAllowed(true);
+                } else {
+                    alert("Countainer not found");
+                    setUser(null);
+                    setContainer(null);
+                    setContainerName(res.data.name || '');
+                    setScanData('');
+                    setIsSubmitAllowed(false);
                 }
-            })
-            .catch(err => console.error(err));
+            }
+        }
+        catch(err)
+        {
+            setScanData('');
+            alert("Error");
+            console.log(err);
+        }
     };
 /*     useEffect(() => {
         if (rollingDoorId > -1)
@@ -635,8 +642,7 @@ const Home = () => {
             if (user == null)
                 handleScan();
             else if (isFinalStep) {
-                console.log(wasteId);
-                console.log(container.waste.bin.filter(x => x.type_waste == wasteId));
+                console.log([wasteId,container]);
                 if (container.waste.bin.filter(x => x.type_waste == wasteId).length < 1) {
                     alert("Mismatch Name: " + scanData);
                     return;
