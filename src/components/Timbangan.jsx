@@ -18,7 +18,7 @@ const Home = () => {
     const [scanData, setScanData] = useState('');
     const [username, setUsername] = useState('');
     const [sensor, setSensor] = useState('');
-    const [neto, setNeto] = useState(3);
+    const [neto, setNeto] = useState(0);
     const [isFreeze, freezeNeto] = useState(false);
     const [isFinalStep, setFinalStep] = useState(false);
     const [containerName, setContainerName] = useState('');
@@ -225,7 +225,7 @@ const Home = () => {
      async function sendRackOpen(rack) {
         try {
             //console.log(container);
-            const response = await axios.post(`http://PCL-10.local:5001/rackOpen`, {
+            const response = await axios.post(`http://${process.env.REACT_APP_RACK}/rackOpen`, {
                 clientId: rack.clientId,
                 address: rack.address,
                 value: rack.value
@@ -252,7 +252,7 @@ const Home = () => {
 
     async function sendRackOpenCollection(bin) {
         try {
-            const response = await axios.post(`http://PCL-10.local:5001/rackOpen`, {
+            const response = await axios.post(`http://${process.env.REACT_APP_RACK}/rackOpen`, {
                 clientId: bin.clientid,
                 address: bin.address,
                 value: bin.value

@@ -66,7 +66,7 @@ const Home = () => {
 
 
     useEffect(() => {
-        setSocket(io('http://PCL-10.local:5001/'));
+        setSocket(io(`http://${process.env.REACT_APP_RACK}/`));
     }, [])
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -159,7 +159,7 @@ const Home = () => {
     const Login = async () => {
         let response = null;
         try {
-            response = await axios.post("http://2-PCL.local:5000/login", {
+            response = await axios.post(`http://${process.env.REACT_APP_TIMBANGAN}/login`, {
                 password: password
             });
         }
@@ -177,7 +177,7 @@ const Home = () => {
             idRack: selectedRack.clientId
         };
         try{
-        const response = await apiClient.post("http://PCL-10.local:5000/rackOpenManual", data);
+        const response = await apiClient.post(`http://${process.env.REACT_APP_RACK_BIN}/rackOpenManual`, data);
         }
         catch
         {}
