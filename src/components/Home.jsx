@@ -79,7 +79,6 @@ const Home = () => {
         getRackList();
     }, []);
     useEffect(()=>{
-        console.log(rackdata);
         if (!rackdata)
             return;
         setRackList(
@@ -123,15 +122,11 @@ const Home = () => {
         if (!socket) return;
         socket.off('weightUpdated');
         socket.on('weightUpdated', input => {
-            // console.log(["Input", data]);
             let tempRack = rackdata;
-            console.log([tempRack,input]);
             let findRack = tempRack.find(x=>x.rackId==input.binId);
-            console.log([tempRack,findRack,input]);
             if (!findRack)
                 return;
             findRack.weight = input.weight;
-            console.log([tempRack,findRack,input]);
             setRackData([...tempRack]);
         });
     
@@ -141,7 +136,6 @@ const Home = () => {
     const handleLogin = async () => {
         toggleModal();
         let res = await Login();
-        console.log(res);
         if (res.status == 200)
             openDoor();
         setPassword(null);
@@ -159,7 +153,7 @@ const Home = () => {
     const Login = async () => {
         let response = null;
         try {
-            response = await axios.post(`http://${process.env.REACT_APP_TIMBANGAN}/login`, {
+            response = await axios.post(`http://${process.env.REACT_APP_RACK}/login`, {
                 password: password
             });
         }

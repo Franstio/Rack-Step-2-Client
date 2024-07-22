@@ -111,9 +111,7 @@ const Home = () => {
 	socket.emit('connectScale');
         socket.on('data1', (weight50Kg) => {
             try {
-                //console.log(weight50Kg)
                 weight50Kg.weight50Kg = weight50Kg && weight50Kg.weight50Kg ? parseFloat(weight50Kg.weight50Kg.replace("=", "") ?? '0') : 0;
-                //  console.log(weight50Kg)
                 setScales50Kg(weight50Kg);
             }
             catch { }
@@ -123,7 +121,6 @@ const Home = () => {
         const weight = Scales50Kg?.weight50Kg ?? 0;
         const binWeight = container?.weightbin ?? 0;
 	//weight = weight - binWeight;
-        //	console.log({w:weight,bin:binWeight,w2:Scales50Kg,c:container});
         if (isFreeze)
             return
         setNeto(weight)
@@ -133,7 +130,6 @@ const Home = () => {
         if (bottomLockHostData.binId != '') {
             new Promise(async ()=>
                 {
-                    console.log({bottomLockHostData:bottomLockHostData});
                     //await sendDataPanasonicServerCollection();
                     await UpdateBinWeightCollection();
                     Promise.resolve();
@@ -158,19 +154,16 @@ const Home = () => {
 
             });
             if (response.status != 200) {
-                console.log(response);
                return;
             }
         }
         catch (error) {
-            console.log(error);
         }
     };
 
     const sendDataPanasonicServerCollection = async (_container) => {
         //const totalWeight = await getTotalweight();
         try {
-            console.log(_container);
             const response = await apiClient.post(`http://${apiTarget}/api/pid/pidatalog`, {
                 badgeno: "123",
                 logindate: '',
@@ -182,12 +175,10 @@ const Home = () => {
 
             });
             if (response.status != 200) {
-                console.log(response);
                 return;
             }
         }
         catch (error) {
-            console.log(error);
         }
     }
 
@@ -198,12 +189,10 @@ const Home = () => {
                 weight: neto,
             });
             if (response.status != 200) {
-                console.log(response);
                 return;
             }
         }
         catch (error) {
-            console.log(error);
         }
     };
     const sendDataWeightPanasonicServerCollection = async (_container) => {
@@ -213,24 +202,20 @@ const Home = () => {
                 weight: "0",
             });
             if (response.status != 200) {
-                console.log(response);
                 return;
             }
         }
         catch (error) {
-            console.log(error);
         }
     }
 
      async function sendRackOpen(rack) {
         try {
-            //console.log(container);
             const response = await axios.post(`http://${process.env.REACT_APP_RACK}/rackOpen`, {
                 clientId: rack.clientId,
                 address: rack.address,
                 value: rack.value
             });
-            console.log(response.data);
         } catch (error) {
             console.error(error);
         }
@@ -238,13 +223,11 @@ const Home = () => {
 
 /*   async function sendSensorRack() {
         try {
-            //console.log(container);
             const response = await axios.post(`http://PCL-10.local:5001/sensorcheck`, {
                 clientId: rack.clientId,
                 address: rack.address,
                 value: rack.value
             });
-            console.log(response.data);
         } catch (error) {
             console.error(error);
         }
@@ -257,7 +240,6 @@ const Home = () => {
                 address: bin.address,
                 value: bin.value
             });
-            console.log(response.data);
         } catch (error) {
             console.error(error);
         }
@@ -293,15 +275,12 @@ const Home = () => {
                 alert(res.data.error);
             } else {
                 if (res.data.container) {
-                    console.log(res.data.container);
                     /*if ( waste != null && res.data.container.IdWaste != waste.IdWaste ) {
                         alert("Waste Mismatch");
                         return;
                     }*/
-                    console.log(res.data.container)
                     setWaste(res.data.container.waste);
                     setStatus(res.data.container.status);
-                    console.log(res.data.container.status)
                     //sendDataPanasonicServerCollection();
 
                     if (res.data.container.status == 'Waiting Dispose To Step 2') {
@@ -318,12 +297,10 @@ const Home = () => {
                             alert("Bin Collection error");
                             return;
                         }
-                        console.log(_bin);
                         const collectionPayload = {...res.data.container,weight: _bin.weight};
                         saveTransaksiCollection(collectionPayload);
                         
                         setBottomLockData({ binId: _bin.rackId });
-                        console.log(collectionPayload);
                         sendRackOpenCollection(_bin);
                         sendDataPanasonicServerCollection(collectionPayload);
                         sendDataWeightPanasonicServerCollection(collectionPayload);
@@ -364,7 +341,6 @@ const Home = () => {
         {
             setScanData('');
             alert("Error");
-            console.log(err);
         }
     };
 /*     useEffect(() => {
@@ -377,8 +353,6 @@ const Home = () => {
     const handleSubmit = async () => {
         const binWeight = container?.weightbin ?? 0;
         const totalWeight = parseFloat(neto) + parseFloat(binWeight);
-        console.log(binWeight);
-        console.log(type);
 
         if (type == 'Dispose') {
             if (neto > 50) {
@@ -429,14 +403,12 @@ const Home = () => {
         catch (er)
         {
             
-            console.log(er);
             alert("Transaksi fail, please check sensor");
             return false;
         }
     };
 
     const saveTransaksiCollection = (_container) => {
-        console.log(_container);
         apiClient.post("http://localhost:5001/SaveTransaksiCollection", {
             payload: {
                 idContainer: _container.containerId,
@@ -457,11 +429,9 @@ const Home = () => {
                 binId: bottomLockHostData.binId
             }).then(x => {
                 const res = x.data;
-                console.log(res);
             });
         }
         catch (error) {
-            console.log(error);
         }
     }
 
@@ -472,27 +442,22 @@ const Home = () => {
                 status: ""
             }).then(x => {
                 const res = x.data;
-                console.log(res);
             });
         }
         catch (error) {
-            console.log(error);
         }
     }
 
     const UpdateDataFromStep2 = async () => {
-        //console.log(idContainer)
         try {
             const response = await apiClient.post('http://localhost:5000/UpdateStatus', {
                 containerName: container.name,
                 status: "Done"
             }).then(x => {
                 const res = x.data;
-                console.log(res);
             });
         }
         catch (error) {
-            console.log(error);
         }
     };
 
@@ -502,11 +467,9 @@ const Home = () => {
                 status: "Done"
             }).then(x => {
                 const res = x.data;
-                console.log(res);
             });
         }
         catch (error) {
-            console.log(error);
         }
     };
 
@@ -516,11 +479,9 @@ const Home = () => {
                 status: container.status,
                 idContainer : container.containerId
             });
-            console.log(response.data);
             return response.data.data.idscraplog;
         }
         catch (error) {
-            console.log(error);
             return null;
         }
     };
@@ -531,11 +492,9 @@ const Home = () => {
                 status: container.status,
                 idContainer : container.containerId
             });
-            console.log(response.data);
             return response.data.data.bin;
         }
         catch (error) {
-            console.log(error);
             return null;
         }
     };
@@ -545,18 +504,15 @@ const Home = () => {
             const response = await apiClient.post(`http://localhost:5001/gettotalweight`, {
                 name: container.waste.bin.name
             });
-            console.log(response.data);
             return response.data.data.idscraplog;
         }
         catch (error) {
-            console.log(error);
             return null;
         }
     };
 
     const CheckBinCapacity = async () => {
         try {
-            console.log(container);
             const response = await apiClient.post('http://localhost:5001/CheckBinCapacity', {
                 line: container.line,
                 //neto: neto
@@ -566,7 +522,6 @@ const Home = () => {
                     alert(res.message);
                     return;
                 }
-                console.log(res);
                // setRollingDoorId(res.bin.id);
                 setRackname(res.bins[0].name);
                 setRackId(res.bins[0].rackId);
@@ -576,7 +531,6 @@ const Home = () => {
                 setValue(res.bins[0].value);
                 //sendRackOpen(res.bins[0]);
             });
-            console.log(response);
         }
         catch (error) {
             console.error(error);
@@ -591,7 +545,6 @@ const Home = () => {
                 setWasteId(null);
 //                updateBinWeight();
             });
-            console.log(response);
         } catch (error) {
             console.error(error);
         }
@@ -642,13 +595,11 @@ const Home = () => {
             if (user == null)
                 handleScan();
             else if (isFinalStep) {
-                console.log([wasteId,container]);
                 if (container.waste.bin.filter(x => x.type_waste == wasteId).length < 1) {
                     alert("Mismatch Name: " + scanData);
                     return;
                 }
                 const scraplogid = await getidscraplog();
-                console.log(scraplogid);
                 if (scraplogid == null)
                 {
                     alert("Scrap Log Id not found,cancelling process");
