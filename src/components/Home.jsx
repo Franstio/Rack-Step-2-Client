@@ -375,7 +375,7 @@ const Home = () => {
                                     </div>
                                     <form>
                                         <Typography variant="h4" align="center" gutterBottom>
-
+                                          Open Bin {selectedRack?.name ?? ''}  
                                         </Typography>
 
                                         <TextField
