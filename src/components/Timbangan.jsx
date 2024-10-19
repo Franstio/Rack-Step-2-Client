@@ -217,7 +217,7 @@ const Home = () => {
                 value: rack.value
             });
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }; 
 
@@ -229,7 +229,7 @@ const Home = () => {
                 value: rack.value
             });
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }; */
 
@@ -241,7 +241,7 @@ const Home = () => {
                 value: bin.value
             });
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
     const handleScan = () => {
@@ -263,7 +263,7 @@ const Home = () => {
                     }
                 }
             })
-            .catch(err => console.error(err));
+            .catch(err => console.log(err));
     };
 
     const handleScan1 = async () => {
@@ -533,7 +533,7 @@ const Home = () => {
             });
         }
         catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 
@@ -546,7 +546,7 @@ const Home = () => {
 //                updateBinWeight();
             });
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
     const updateBinWeight = async () => {
@@ -567,7 +567,7 @@ const Home = () => {
 
         }
         catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 
@@ -587,7 +587,7 @@ const Home = () => {
 
         }
         catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
     const handleKeyPress = async (e) => {
