@@ -96,7 +96,7 @@ const Home = () => {
                     </div>
                     <div className='text-center mt-2 text-lg font-bold'>
                       {/*   <p>{_rackdata.weight}Kg</p> */}
-                        <p>{_rackdata.weight}Kg</p>
+                        <p>{parseFloat(_rackdata.weight??"0").toFixed(2)}Kg</p>
                         <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={() => selectRack(_rackdata)}>Open</a>
                     </div>
                 </div>
