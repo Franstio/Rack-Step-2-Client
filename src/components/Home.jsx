@@ -395,7 +395,35 @@ const Home = () => {
                 <p>Server Status: 192.168.1.5 Online</p>
                 <p>Status PLC : Online</p>
             </footer> */}
+                    {serverErr.show && (
+                        <div className="fixed z-10 inset-0 overflow-y-auto">
+                            <div className="flex items-center justify-center min-h-screen">
+                                <div
+                                    className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                                    aria-hidden="true"
+                                ></div>
 
+                                <div className="bg-white rounded p-8 max-w-md mx-auto z-50">
+                                    <div className="text-center mb-4"></div>
+                                    <form>
+                                        <p>{serverErr.message}</p>
+                                        <div className="flex justify-center mt-5">
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setServerErr((prev) => ({ show: false, message: '' }));
+                                                    setServerActive(true);
+                                                }}
+                                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 mr-2 rounded"
+                                            >
+                                                Continue
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    )}
             <footer className='flex-1 rounded border gap-40 p-3 bg-white' >
                 <div className='flex justify-start'>
                     <button onClick={toggleModal} className="border rounded bg-sky-400 text-white p-2 ml-2">
@@ -457,35 +485,7 @@ const Home = () => {
                             </div>
                         </div>
                     )}
-                    {serverErr.show && (
-                        <div className="fixed z-10 inset-0 overflow-y-auto">
-                            <div className="flex items-center justify-center min-h-screen">
-                                <div
-                                    className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                                    aria-hidden="true"
-                                ></div>
 
-                                <div className="bg-white rounded p-8 max-w-md mx-auto z-50">
-                                    <div className="text-center mb-4"></div>
-                                    <form>
-                                        <p>{serverErr.message}</p>
-                                        <div className="flex justify-center mt-5">
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    setServerErr((prev) => ({ show: false, message: '' }));
-                                                    setServerActive(true);
-                                                }}
-                                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 mr-2 rounded"
-                                            >
-                                                Continue
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
                 <div className='flex justify-center gap-40'>
                     <p>Server Status: 192.168.1.5 Online</p>
