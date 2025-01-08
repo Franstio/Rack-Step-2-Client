@@ -79,6 +79,7 @@ const Home = () => {
     const checkServerAPI = async () => {
         try {
             const res = await apiClient.get(`http://${process.env.REACT_APP_RACK_BIN}/ping`, { timeout: 2500 });
+            console.log(res.status);
             setServerActive(res.status==200);
             return true;
         }
@@ -160,10 +161,7 @@ const Home = () => {
         toggleModal();
         const check=  await checkServerAPI();
         if (!check)
-        {
-            setServerActive(check);
             return;
-        }
         let res = await Login();
         if (res.status == 200)
             openDoor();
@@ -183,10 +181,7 @@ const Home = () => {
         let response = null;
         const check=  await checkServerAPI();
         if (!check)
-        {
             setServerActive(check);
-            return;
-        }
         try {
             response = await axios.post(`http://${process.env.REACT_APP_RACK}/login`, {
                 password: password
