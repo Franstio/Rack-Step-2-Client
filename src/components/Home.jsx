@@ -16,8 +16,8 @@ import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import { IconButton } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import Visibility  from '@mui/icons-material/Visibility';
-import VisibilityOff  from '@mui/icons-material/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import io from 'socket.io-client';
 
 const apiClient = axios.create({
@@ -63,7 +63,8 @@ const Home = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [racklist, setRackList] = useState([]);
     const [socket, setSocket] = useState(); // Sesuaikan dengan alamat server
-
+    const [serverActive, setServerActive] = useState(true);
+    const [serverErr,setServerErr] = useState({show:'',message:''});
 
     useEffect(() => {
         setSocket(io(`http://${process.env.REACT_APP_RACK}/`));
@@ -75,63 +76,88 @@ const Home = () => {
         setSelectedRack(rack);
         toggleModal();
     }
+    const checkServerAPI = async () => {
+        try {
+            const res = await apiClient.get(`http://${process.env.REACT_APP_RACK_BIN}/ping`, { timeout: 2500 });
+            return true;
+        }
+        catch (er) {
+            return false;
+        }
+    }
+    useEffect(() => {
+        const f = async () => {
+            const check = await checkServerAPI();
+            setServerActive(check);
+        };
+        f();
+        setInterval(async () => {
+            await f();
+        }, 3000);
+    }, [])
+    useState(()=>{
+        if (!serverErr.show && !serverActive)
+            setServerErr({show:true,message:"Server Disconnecting, Halting Application"});
+        else if (serverErr.show && serverActive)
+            setServerErr({show:false,message:''});
+    },[serverActive])
     useEffect(() => {
         getRackList();
     }, []);
-    useEffect(()=>{
+    useEffect(() => {
         if (!rackdata)
             return;
         setRackList(
             rackdata.slice(pagesVisited, pagesVisited + rackPerPage)
-    .map((_rackdata, index) => {
-        const value = Math.round((_rackdata.weight / _rackdata.max_weight) * 100);
-        return (
-            <div className='' key={index}>
-                <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
-                    <FiberManualRecordIcon fontSize="small" style={{ color: 'green', position: 'absolute', top: 0, right: 0 }} />
-                    <h1 className='text-center mb-2 font-bold text-lg'>{_rackdata.name}</h1>
-                    <div className='' style={{ display: 'flex', alignItems: 'center' }}>
-                        <BorderLinearProgress variant="determinate" value={value} style={{ width: '90%', height: '12px', marginRight: '10px' }} />
-                        {value.toFixed(2)}%
-                    </div>
-                    <div className='text-center mt-2 text-lg font-bold'>
-                      {/*   <p>{_rackdata.weight}Kg</p> */}
-                        <p>{parseFloat(_rackdata.weight??"0").toFixed(2)}Kg</p>
-                        <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={() => selectRack(_rackdata)}>Open</a>
-                    </div>
-                </div>
-            </div>
-        );
-    })
+                .map((_rackdata, index) => {
+                    const value = Math.round((_rackdata.weight / _rackdata.max_weight) * 100);
+                    return (
+                        <div className='' key={index}>
+                            <div className='flex-1 p-4 border rounded bg-white mt-5 relative'>
+                                <FiberManualRecordIcon fontSize="small" style={{ color: 'green', position: 'absolute', top: 0, right: 0 }} />
+                                <h1 className='text-center mb-2 font-bold text-lg'>{_rackdata.name}</h1>
+                                <div className='' style={{ display: 'flex', alignItems: 'center' }}>
+                                    <BorderLinearProgress variant="determinate" value={value} style={{ width: '90%', height: '12px', marginRight: '10px' }} />
+                                    {value.toFixed(2)}%
+                                </div>
+                                <div className='text-center mt-2 text-lg font-bold'>
+                                    {/*   <p>{_rackdata.weight}Kg</p> */}
+                                    <p>{parseFloat(_rackdata.weight ?? "0").toFixed(2)}Kg</p>
+                                    <a className='block w-full border rounded flex justify-center items-center mt-2 bg-sky-400 text-white' onClick={() => selectRack(_rackdata)}>Open</a>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })
         )
-    },[rackdata]);
+    }, [rackdata]);
     const getRackList = async () => {
         const response = await axios.get("http://localhost:5001/racklist");
         setRackData(response.data);
     };
 
-/*     useEffect(() => {
-        socket.on('weightUpdated', (data) => {
-            setWeights((prevWeights) => ({
-                ...prevWeights,
-                [data.binId]: data.weight,
-            }));
-        });
-    }, [socket]); */
+    /*     useEffect(() => {
+            socket.on('weightUpdated', (data) => {
+                setWeights((prevWeights) => ({
+                    ...prevWeights,
+                    [data.binId]: data.weight,
+                }));
+            });
+        }, [socket]); */
     useEffect(() => {
         if (!socket) return;
         socket.off('weightUpdated');
         socket.on('weightUpdated', input => {
             let tempRack = rackdata;
-            let findRack = tempRack.find(x=>x.rackId==input.binId);
+            let findRack = tempRack.find(x => x.rackId == input.binId);
             if (!findRack)
                 return;
             findRack.weight = input.weight;
             setRackData([...tempRack]);
         });
-    
-    }, [socket,rackdata]);
-    
+
+    }, [socket, rackdata]);
+
 
     const handleLogin = async () => {
         toggleModal();
@@ -152,6 +178,12 @@ const Home = () => {
 
     const Login = async () => {
         let response = null;
+        const check=  await checkServerAPI();
+        if (!check)
+        {
+            serverActive(check);
+            return;
+        }
         try {
             response = await axios.post(`http://${process.env.REACT_APP_RACK}/login`, {
                 password: password
@@ -165,24 +197,29 @@ const Home = () => {
     };
 
     const openDoor = async () => {
+        const check=  await checkServerAPI();
+        if (!check)
+        {
+            serverActive(check);
+            return;
+        }
         const data = {
             address: selectedRack.address,
             value: selectedRack.value,
             idRack: selectedRack.clientId
         };
-        try{
-        const response = await apiClient.post(`http://${process.env.REACT_APP_RACK_BIN}/rackOpenManual`, data);
+        try {
+            const response = await apiClient.post(`http://${process.env.REACT_APP_RACK_BIN}/rackOpenManual`, data);
         }
-        catch
-        {}
+        catch { }
     };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
-      };
-    
+    };
 
-    const [pageNumber, setPageNumber] = useState(0);    
+
+    const [pageNumber, setPageNumber] = useState(0);
     const rackPerPage = 26;
     const pagesVisited = pageNumber * rackPerPage;
 
@@ -375,7 +412,7 @@ const Home = () => {
                                     </div>
                                     <form>
                                         <Typography variant="h4" align="center" gutterBottom>
-                                          Open Bin {selectedRack?.name ?? ''}  
+                                            Open Bin {selectedRack?.name ?? ''}
                                         </Typography>
 
                                         <TextField
@@ -420,10 +457,39 @@ const Home = () => {
                             </div>
                         </div>
                     )}
+                    {serverErr.show && (
+                        <div className="fixed z-10 inset-0 overflow-y-auto">
+                            <div className="flex items-center justify-center min-h-screen">
+                                <div
+                                    className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                                    aria-hidden="true"
+                                ></div>
+
+                                <div className="bg-white rounded p-8 max-w-md mx-auto z-50">
+                                    <div className="text-center mb-4"></div>
+                                    <form>
+                                        <p>{serverErr.message}</p>
+                                        <div className="flex justify-center mt-5">
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setServerErr((prev) => ({ show: false, message: '' }));
+                                                    setServerActive(true);
+                                                }}
+                                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 mr-2 rounded"
+                                            >
+                                                Continue
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div className='flex justify-center gap-40'>
                     <p>Server Status: 192.168.1.5 Online</p>
-                    <p>Status PLC : Online</p>
+                    <p>Status PLC : {serverActive ? "Online" : "Offline"}</p>
                 </div>
             </footer>
         </main>
