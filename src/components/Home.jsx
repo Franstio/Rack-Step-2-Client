@@ -183,7 +183,7 @@ const Home = () => {
         let response = null;
         const check=  await checkServerAPI();
         if (!check)
-            setServerActive(check);
+            return {status:500};
         try {
             response = await axios.post(`http://${process.env.REACT_APP_RACK}/login`, {
                 password: password
