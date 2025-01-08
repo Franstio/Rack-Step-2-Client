@@ -80,12 +80,12 @@ const Home = () => {
         try {
             const res = await apiClient.get(`http://${process.env.REACT_APP_RACK_BIN}/ping`, { timeout: 2500 });
             console.log(res.status);
-            setServerActive(res.status==200);
+            setServerActive((prev)=>res.status==200);
             return res.status==200;
         }
         catch (er) {
             console.log('error network');
-            setServerActive(false);
+            setServerActive((prev)=>false);
             return false;
         }
     }
