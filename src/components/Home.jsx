@@ -79,7 +79,7 @@ const Home = () => {
     const checkServerAPI = async () => {
         try {
             const res = await apiClient.get(`http://${process.env.REACT_APP_RACK_BIN}/ping`, { timeout: 2500 });
-            setServerActive(true);
+            setServerActive(res.status==200);
             return true;
         }
         catch (er) {
@@ -88,13 +88,9 @@ const Home = () => {
         }
     }
     useEffect(() => {
-        const f = async () => {
-            const check = await checkServerAPI();
-        };
-        f();
-        setInterval(async () => {
-            await f();
-        }, 3000);
+        
+//        checkServerAPI();
+        setInterval(()=>checkServerAPI(), 3000);
     }, [])
     useState(()=>{
         if (!serverErr.show && !serverActive)
@@ -162,6 +158,12 @@ const Home = () => {
 
     const handleLogin = async () => {
         toggleModal();
+        const check=  await checkServerAPI();
+        if (!check)
+        {
+            setServerActive(check);
+            return;
+        }
         let res = await Login();
         if (res.status == 200)
             openDoor();
