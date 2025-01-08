@@ -1,5 +1,5 @@
 
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { IoSettingsOutline } from "react-icons/io5";
@@ -199,10 +199,7 @@ const Home = () => {
     const openDoor = async () => {
         const check=  await checkServerAPI();
         if (!check)
-        {
-            setServerActive(check);
             return;
-        }
         const data = {
             address: selectedRack.address,
             value: selectedRack.value,
@@ -220,8 +217,10 @@ const Home = () => {
 
 
     const [pageNumber, setPageNumber] = useState(0);
-    const rackPerPage = 26;
-    const pagesVisited = pageNumber * rackPerPage;
+    const [rackPerPage,setRackPerPage] = useState(26);
+    const pagesVisited = useMemo(()=>{
+        return pageNumber * rackPerPage
+    },[rackPerPage,pageNumber]);
 
 
 
