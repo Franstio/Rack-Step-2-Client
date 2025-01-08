@@ -64,7 +64,7 @@ const Home = () => {
     const [racklist, setRackList] = useState([]);
     const [socket, setSocket] = useState(); // Sesuaikan dengan alamat server
     const [serverActive, setServerActive] = useState(true);
-    const [serverErr,setServerErr] = useState({show:'',message:''});
+    const [serverErr,setServerErr] = useState({show:false,message:''});
 
     useEffect(() => {
         setSocket(io(`http://${process.env.REACT_APP_RACK}/`));
