@@ -84,6 +84,7 @@ const Home = () => {
             return res.status==200;
         }
         catch (er) {
+            console.log('error network');
             setServerActive(false);
             return false;
         }
