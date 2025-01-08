@@ -181,7 +181,7 @@ const Home = () => {
         const check=  await checkServerAPI();
         if (!check)
         {
-            serverActive(check);
+            setServerActive(check);
             return;
         }
         try {
@@ -200,7 +200,7 @@ const Home = () => {
         const check=  await checkServerAPI();
         if (!check)
         {
-            serverActive(check);
+            setServerActive(check);
             return;
         }
         const data = {
