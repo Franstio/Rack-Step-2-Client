@@ -81,7 +81,7 @@ const Home = () => {
             const res = await apiClient.get(`http://${process.env.REACT_APP_RACK_BIN}/ping`, { timeout: 2500 });
             console.log(res.status);
             setServerActive(res.status==200);
-            return true;
+            return res.status==200;
         }
         catch (er) {
             setServerActive(false);
