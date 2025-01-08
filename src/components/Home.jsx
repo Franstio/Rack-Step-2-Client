@@ -94,7 +94,7 @@ const Home = () => {
 //        checkServerAPI();
         setInterval(()=>checkServerAPI(), 3000);
     }, [])
-    useState(()=>{
+    useEffect(()=>{
         console.log(serverActive);
         if (!serverErr.show && !serverActive)
             setServerErr({show:true,message:"Server Disconnecting, Halting Application"});
