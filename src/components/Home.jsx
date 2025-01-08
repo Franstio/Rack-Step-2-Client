@@ -79,16 +79,17 @@ const Home = () => {
     const checkServerAPI = async () => {
         try {
             const res = await apiClient.get(`http://${process.env.REACT_APP_RACK_BIN}/ping`, { timeout: 2500 });
+            setServerActive(true);
             return true;
         }
         catch (er) {
+            setServerActive(false);
             return false;
         }
     }
     useEffect(() => {
         const f = async () => {
             const check = await checkServerAPI();
-            setServerActive(check);
         };
         f();
         setInterval(async () => {
