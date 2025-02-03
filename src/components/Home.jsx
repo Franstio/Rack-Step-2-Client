@@ -489,6 +489,7 @@ const Home = () => {
                 <div className='flex justify-center gap-40'>
                     <p>Server Status: 192.168.1.5 Online</p>
                     <p>Status PLC : {serverActive ? "Online" : "Offline"}</p>
+                    <p>Version : {process.env.REACT_APP_VERSION}</p>
                 </div>
             </footer>
         </main>
